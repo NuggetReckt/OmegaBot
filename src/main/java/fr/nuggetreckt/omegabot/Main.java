@@ -1,6 +1,10 @@
 package fr.nuggetreckt.omegabot;
 
+import fr.nuggetreckt.omegabot.listeners.MemberJoinListener;
 import fr.nuggetreckt.omegabot.listeners.ReadyListener;
+import fr.nuggetreckt.omegabot.listeners.RoleButtonListener;
+import fr.nuggetreckt.omegabot.listeners.VerifyButtonListener;
+import fr.nuggetreckt.omegabot.tasks.EmbedsSender;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -31,7 +35,15 @@ public class Main {
         System.out.println("Token bon. Lancement du bot...");
 
         jda = JDABuilder.createDefault(token)
+                //Basic Listeners
                 .addEventListeners(new ReadyListener())
+                .addEventListeners(new MemberJoinListener())
+
+                //Button Listeners
+                .addEventListeners(new VerifyButtonListener())
+                .addEventListeners(new RoleButtonListener())
                 .build();
+
+        new EmbedsSender();
     }
 }

@@ -17,4 +17,36 @@ public class Config {
     public String getPollChannelId() {
         return "";
     }
+
+    public String getJoinChannelId() {
+        return "";
+    }
+
+    public String getMemberRoleId() {
+        return "";
+    }
+
+    public String getPollsRoleId() {
+        return "";
+    }
+
+    public String getAnnouncementRoleId() {
+        return "";
+    }
+
+    public String getEventRoleId() {
+        return "";
+    }
+
+    public String getInterestingInformationsRoleId() {
+        return "";
+    }
+
+    public String getMinecraftRoleId() {
+        return "";
+    }
+
+    public String getHardwareRoleId() {
+        return "";
+    }
 }
