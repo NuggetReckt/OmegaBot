@@ -8,6 +8,8 @@ import fr.nuggetreckt.omegabot.tasks.EmbedsSender;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Guild;
+import net.dv8tion.jda.api.requests.GatewayIntent;
 
 import javax.security.auth.login.LoginException;
 
@@ -17,7 +19,7 @@ public class Main {
     public static Dotenv dotenv;
     public static String token;
 
-    public static void main(String[] args) throws LoginException, RuntimeException {
+    public static void main(String[] args) throws RuntimeException, LoginException {
 
         System.out.println("Vérification du Token...");
 
@@ -42,8 +44,10 @@ public class Main {
                 //Button Listeners
                 .addEventListeners(new VerifyButtonListener())
                 .addEventListeners(new RoleButtonListener())
+
+                .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .build();
 
-        new EmbedsSender();
+        new EmbedsSender().SendEmbeds();
     }
 }

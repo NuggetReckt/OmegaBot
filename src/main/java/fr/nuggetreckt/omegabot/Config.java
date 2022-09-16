@@ -3,50 +3,50 @@ package fr.nuggetreckt.omegabot;
 public class Config {
 
     public String getVerifyChannelId() {
-        return "";
+        return "1020311084760047626";
     }
 
     public String getRulesChannelId() {
-        return "";
+        return "1020311186123796511";
     }
 
     public String getTakeRoleChannelId() {
-        return "";
+        return "1020311310220673054";
     }
 
     public String getPollChannelId() {
-        return "";
+        return "1020323045790990446";
     }
 
     public String getJoinChannelId() {
-        return "";
+        return "995102579413487686";
     }
 
     public String getMemberRoleId() {
-        return "";
+        return "1020311604585312286";
     }
 
     public String getPollsRoleId() {
-        return "";
+        return "1020311656477229096";
     }
 
     public String getAnnouncementRoleId() {
-        return "";
+        return "1020311696440573962";
     }
 
     public String getEventRoleId() {
-        return "";
+        return "1020311742359806022";
     }
 
     public String getInterestingInformationsRoleId() {
-        return "";
+        return "1020311776065241190";
     }
 
     public String getMinecraftRoleId() {
-        return "";
+        return "1020311837532758046";
     }
 
     public String getHardwareRoleId() {
-        return "";
+        return "1020311879282855997";
     }
 }

@@ -20,66 +20,114 @@ public class RoleButtonListener extends ListenerAdapter {
                 Role role = Objects.requireNonNull(event.getGuild()).getRoleById(new Config().getPollsRoleId());
                 assert role != null;
 
-                event.getGuild().addRoleToMember(member, role)
-                        .queue();
+                if (!member.getRoles().contains(role)) {
+                    event.getGuild().addRoleToMember(member, role)
+                            .queue();
 
-                event.reply("> Rôle" + role.getName() + "ajouté avec succès.").setEphemeral(true)
-                        .queue();
+                    event.reply("> Rôle" + role.getName() + "ajouté avec succès.").setEphemeral(true)
+                            .queue();
+                } else {
+                    event.getGuild().removeRoleFromMember(member, role)
+                            .queue();
+
+                    event.reply("> Rôle" + role.getName() + "retiré avec succès.").setEphemeral(true)
+                            .queue();
+                }
             }
 
             if (Objects.requireNonNull(event.getButton().getId()).equals("ROLE_ANNOUNCEMENTS")) {
                 Role role = Objects.requireNonNull(event.getGuild()).getRoleById(new Config().getAnnouncementRoleId());
                 assert role != null;
 
-                event.getGuild().addRoleToMember(member, role)
-                        .queue();
+                if (!member.getRoles().contains(role)) {
+                    event.getGuild().addRoleToMember(member, role)
+                            .queue();
 
-                event.reply("> Rôle" + role.getName() + "ajouté avec succès.").setEphemeral(true)
-                        .queue();
+                    event.reply("> Rôle" + role.getName() + "ajouté avec succès.").setEphemeral(true)
+                            .queue();
+                } else {
+                    event.getGuild().removeRoleFromMember(member, role)
+                            .queue();
+
+                    event.reply("> Rôle" + role.getName() + "retiré avec succès.").setEphemeral(true)
+                            .queue();
+                }
             }
 
             if (Objects.requireNonNull(event.getButton().getId()).equals("ROLE_EVENTS")) {
                 Role role = Objects.requireNonNull(event.getGuild()).getRoleById(new Config().getEventRoleId());
                 assert role != null;
 
-                event.getGuild().addRoleToMember(member, role)
-                        .queue();
+                if (!member.getRoles().contains(role)) {
+                    event.getGuild().addRoleToMember(member, role)
+                            .queue();
 
-                event.reply("> Rôle" + role.getName() + "ajouté avec succès.").setEphemeral(true)
-                        .queue();
+                    event.reply("> Rôle" + role.getName() + "ajouté avec succès.").setEphemeral(true)
+                            .queue();
+                } else {
+                    event.getGuild().removeRoleFromMember(member, role)
+                            .queue();
+
+                    event.reply("> Rôle" + role.getName() + "retiré avec succès.").setEphemeral(true)
+                            .queue();
+                }
             }
 
             if (Objects.requireNonNull(event.getButton().getId()).equals("ROLE_INTERESTING-INFORMATIONS")) {
                 Role role = Objects.requireNonNull(event.getGuild()).getRoleById(new Config().getInterestingInformationsRoleId());
                 assert role != null;
 
-                event.getGuild().addRoleToMember(member, role)
-                        .queue();
+                if (!member.getRoles().contains(role)) {
+                    event.getGuild().addRoleToMember(member, role)
+                            .queue();
 
-                event.reply("> Rôle" + role.getName() + "ajouté avec succès.").setEphemeral(true)
-                        .queue();
+                    event.reply("> Rôle" + role.getName() + "ajouté avec succès.").setEphemeral(true)
+                            .queue();
+                } else {
+                    event.getGuild().removeRoleFromMember(member, role)
+                            .queue();
+
+                    event.reply("> Rôle" + role.getName() + "retiré avec succès.").setEphemeral(true)
+                            .queue();
+                }
             }
 
             if (Objects.requireNonNull(event.getButton().getId()).equals("ROLE_MINECRAFT")) {
                 Role role = Objects.requireNonNull(event.getGuild()).getRoleById(new Config().getMinecraftRoleId());
                 assert role != null;
 
-                event.getGuild().addRoleToMember(member, role)
-                        .queue();
+                if (!member.getRoles().contains(role)) {
+                    event.getGuild().addRoleToMember(member, role)
+                            .queue();
 
-                event.reply("> Rôle" + role.getName() + "ajouté avec succès.").setEphemeral(true)
-                        .queue();
+                    event.reply("> Rôle" + role.getName() + "ajouté avec succès.").setEphemeral(true)
+                            .queue();
+                } else {
+                    event.getGuild().removeRoleFromMember(member, role)
+                            .queue();
+
+                    event.reply("> Rôle" + role.getName() + "retiré avec succès.").setEphemeral(true)
+                            .queue();
+                }
             }
 
             if (Objects.requireNonNull(event.getButton().getId()).equals("ROLE_HARDWARE-TECH")) {
                 Role role = Objects.requireNonNull(event.getGuild()).getRoleById(new Config().getHardwareRoleId());
                 assert role != null;
 
-                event.getGuild().addRoleToMember(member, role)
-                        .queue();
+                if (!member.getRoles().contains(role)) {
+                    event.getGuild().addRoleToMember(member, role)
+                            .queue();
 
-                event.reply("> Rôle" + role.getName() + "ajouté avec succès.").setEphemeral(true)
-                        .queue();
+                    event.reply("> Rôle" + role.getName() + "ajouté avec succès.").setEphemeral(true)
+                            .queue();
+                } else {
+                    event.getGuild().removeRoleFromMember(member, role)
+                            .queue();
+
+                    event.reply("> Rôle" + role.getName() + "retiré avec succès.").setEphemeral(true)
+                            .queue();
+                }
             }
         }
     }

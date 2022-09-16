@@ -1,9 +1,8 @@
 package fr.nuggetreckt.omegabot.tasks;
 
 import fr.nuggetreckt.omegabot.Config;
-import fr.nuggetreckt.omegabot.Main;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
@@ -11,29 +10,52 @@ import java.awt.*;
 import java.util.Date;
 import java.util.Objects;
 
+import static fr.nuggetreckt.omegabot.Main.jda;
+
 public class EmbedsSender {
 
-    public static void main(String[] args) {
+    final TextChannel takeRoleChannel = jda.getTextChannelById(new Config().getTakeRoleChannelId());
+    final TextChannel verifyChannel = jda.getTextChannelById(new Config().getVerifyChannelId());
+    final TextChannel rulesChannel = jda.getTextChannelById(new Config().getRulesChannelId());
+
+    public void SendEmbeds() {
         try {
-            new EmbedsSender().takeRoleEmbedSender();
-            new EmbedsSender().verifyEmbedSender();
-            new EmbedsSender().rulesEmbedSender();
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
+            takeRoleEmbedSender();
+            verifyEmbedSender();
+            rulesEmbedSender();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
     public void takeRoleEmbedSender() {
-        String takeRoleChannelId = new Config().getTakeRoleChannelId();
-        TextChannel takeRoleChannel = Main.jda.getTextChannelById(takeRoleChannelId);
 
-        if (Objects.requireNonNull(takeRoleChannel).getHistory().isEmpty()) {
+        System.out.println("debug");
+
+        /*MessageHistory history = MessageHistory.getHistoryFromBeginning(takeRoleChannel).complete();
+        List<Message> messages = history.getRetrievedHistory();*/
+
+        int messages = Objects.requireNonNull(takeRoleChannel).getHistory().size();
+
+        if (messages == 1) {
+            return;
+        }
+
+        if (messages == 0) {
             EmbedBuilder takeRoleEmbed = new EmbedBuilder();
 
-            takeRoleEmbed.setTitle(" ・ Rôles")
+            takeRoleEmbed.setTitle("\uD83D\uDCCC ・ Rôles")
                     .setDescription("Séléctionne les rôles à l'aide des boutons ci-dessous pour avoir des pings personnalisés et avoir accès à des salons sépcifiques !")
-                    .addField("Mentions", "", true)
-                    .addField("Accès salons spécifiques", "", true)
+                    .addField("Mentions", """
+                            \uD83D\uDCCA ・ Sondages
+                            \uD83D\uDCE2 ・ Annonces
+                            \uD83C\uDF89 ・ Events
+                            \uD83D\uDCDA ・ Informations intéressantes
+                            """, true)
+                    .addField("Accès salons spécifiques", """
+                            \uD83C\uDF33 ・ Minecraft
+                            \uD83D\uDD28 ・ Hardware/Tech
+                            """, true)
                     .setColor(new Color(255, 255, 255, 1))
                     .setFooter("OmegaBot - NuggetReckt", "https://media.discordapp.net/attachments/712679066872053810/1017822877799686225/unknown.png")
                     .setTimestamp(new Date().toInstant());
@@ -52,10 +74,16 @@ public class EmbedsSender {
     }
 
     public void verifyEmbedSender() {
-        String verifyRoleChannelId = new Config().getVerifyChannelId();
-        TextChannel verifyChannel = Main.jda.getTextChannelById(verifyRoleChannelId);
 
-        if (Objects.requireNonNull(verifyChannel).getHistory().isEmpty()) {
+        System.out.println("debug");
+
+        int messages = Objects.requireNonNull(verifyChannel).getHistory().size();
+
+        if (messages == 1) {
+            return;
+        }
+
+        if (messages == 0) {
             EmbedBuilder verifyEmbed = new EmbedBuilder();
 
             verifyEmbed.setTitle(" ・ Vérification")
@@ -67,17 +95,23 @@ public class EmbedsSender {
 
             verifyChannel.sendMessageEmbeds(verifyEmbed.build())
                     .setActionRow(
-                          Button.primary("VERIFY", "Acceder au Discord")
+                            Button.primary("VERIFY", "Acceder au Discord")
                     )
                     .queue();
         }
     }
 
     public void rulesEmbedSender() {
-        String rulesRoleChannelId = new Config().getRulesChannelId();
-        TextChannel rulesChannel = Main.jda.getTextChannelById(rulesRoleChannelId);
 
-        if (Objects.requireNonNull(rulesChannel).getHistory().isEmpty()) {
+        System.out.println("debug");
+
+        int messages = Objects.requireNonNull(rulesChannel).getHistory().size();
+
+        if (messages == 1) {
+            return;
+        }
+
+        if (messages == 0) {
             EmbedBuilder rulesEmbed = new EmbedBuilder();
 
             rulesEmbed.setTitle("✅ ・ Règlement du discord")
