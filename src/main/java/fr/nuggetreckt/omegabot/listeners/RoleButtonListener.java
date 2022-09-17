@@ -24,13 +24,13 @@ public class RoleButtonListener extends ListenerAdapter {
                     event.getGuild().addRoleToMember(member, role)
                             .queue();
 
-                    event.reply("> Rôle" + role.getName() + "ajouté avec succès.").setEphemeral(true)
+                    event.reply("> Rôle " + role.getAsMention() + " ajouté avec succès.").setEphemeral(true)
                             .queue();
                 } else {
                     event.getGuild().removeRoleFromMember(member, role)
                             .queue();
 
-                    event.reply("> Rôle" + role.getName() + "retiré avec succès.").setEphemeral(true)
+                    event.reply("> Rôle " + role.getAsMention() + " retiré avec succès.").setEphemeral(true)
                             .queue();
                 }
             }
@@ -43,13 +43,13 @@ public class RoleButtonListener extends ListenerAdapter {
                     event.getGuild().addRoleToMember(member, role)
                             .queue();
 
-                    event.reply("> Rôle" + role.getName() + "ajouté avec succès.").setEphemeral(true)
+                    event.reply("> Rôle " + role.getAsMention() + " ajouté avec succès.").setEphemeral(true)
                             .queue();
                 } else {
                     event.getGuild().removeRoleFromMember(member, role)
                             .queue();
 
-                    event.reply("> Rôle" + role.getName() + "retiré avec succès.").setEphemeral(true)
+                    event.reply("> Rôle " + role.getAsMention() + " retiré avec succès.").setEphemeral(true)
                             .queue();
                 }
             }
@@ -62,13 +62,13 @@ public class RoleButtonListener extends ListenerAdapter {
                     event.getGuild().addRoleToMember(member, role)
                             .queue();
 
-                    event.reply("> Rôle" + role.getName() + "ajouté avec succès.").setEphemeral(true)
+                    event.reply("> Rôle " + role.getAsMention() + " ajouté avec succès.").setEphemeral(true)
                             .queue();
                 } else {
                     event.getGuild().removeRoleFromMember(member, role)
                             .queue();
 
-                    event.reply("> Rôle" + role.getName() + "retiré avec succès.").setEphemeral(true)
+                    event.reply("> Rôle " + role.getAsMention() + " retiré avec succès.").setEphemeral(true)
                             .queue();
                 }
             }
@@ -81,13 +81,13 @@ public class RoleButtonListener extends ListenerAdapter {
                     event.getGuild().addRoleToMember(member, role)
                             .queue();
 
-                    event.reply("> Rôle" + role.getName() + "ajouté avec succès.").setEphemeral(true)
+                    event.reply("> Rôle " + role.getAsMention() + " ajouté avec succès.").setEphemeral(true)
                             .queue();
                 } else {
                     event.getGuild().removeRoleFromMember(member, role)
                             .queue();
 
-                    event.reply("> Rôle" + role.getName() + "retiré avec succès.").setEphemeral(true)
+                    event.reply("> Rôle " + role.getAsMention() + " retiré avec succès.").setEphemeral(true)
                             .queue();
                 }
             }
@@ -100,13 +100,13 @@ public class RoleButtonListener extends ListenerAdapter {
                     event.getGuild().addRoleToMember(member, role)
                             .queue();
 
-                    event.reply("> Rôle" + role.getName() + "ajouté avec succès.").setEphemeral(true)
+                    event.reply("> Rôle " + role.getAsMention() + " ajouté avec succès.").setEphemeral(true)
                             .queue();
                 } else {
                     event.getGuild().removeRoleFromMember(member, role)
                             .queue();
 
-                    event.reply("> Rôle" + role.getName() + "retiré avec succès.").setEphemeral(true)
+                    event.reply("> Rôle " + role.getAsMention() + " retiré avec succès.").setEphemeral(true)
                             .queue();
                 }
             }
@@ -119,13 +119,13 @@ public class RoleButtonListener extends ListenerAdapter {
                     event.getGuild().addRoleToMember(member, role)
                             .queue();
 
-                    event.reply("> Rôle" + role.getName() + "ajouté avec succès.").setEphemeral(true)
+                    event.reply("> Rôle " + role.getAsMention() + " ajouté avec succès.").setEphemeral(true)
                             .queue();
                 } else {
                     event.getGuild().removeRoleFromMember(member, role)
                             .queue();
 
-                    event.reply("> Rôle" + role.getName() + "retiré avec succès.").setEphemeral(true)
+                    event.reply("> Rôle " + role.getAsMention() + " retiré avec succès.").setEphemeral(true)
                             .queue();
                 }
             }

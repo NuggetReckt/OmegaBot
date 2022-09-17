@@ -1,10 +1,11 @@
 package fr.nuggetreckt.omegabot.listeners;
 
 import fr.nuggetreckt.omegabot.Main;
+import fr.nuggetreckt.omegabot.tasks.BotStatus;
+import fr.nuggetreckt.omegabot.tasks.EmbedsSender;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 public class ReadyListener implements EventListener {
@@ -21,6 +22,9 @@ public class ReadyListener implements EventListener {
                      \\____/|_| |_| |_|\\___|\\__, |\\__,_|____/ \\___/ \\__|
                                             __/ |
                                            |___/""");
+
+            new EmbedsSender().SendEmbeds();
+            new BotStatus().setStatus();
         }
     }
 }

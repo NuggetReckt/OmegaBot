@@ -2,13 +2,13 @@ package fr.nuggetreckt.omegabot.tasks;
 
 import fr.nuggetreckt.omegabot.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 import java.awt.*;
 import java.util.Date;
-import java.util.Objects;
 
 import static fr.nuggetreckt.omegabot.Main.jda;
 
@@ -30,12 +30,9 @@ public class EmbedsSender {
 
     public void takeRoleEmbedSender() {
 
-        System.out.println("debug");
-
-        /*MessageHistory history = MessageHistory.getHistoryFromBeginning(takeRoleChannel).complete();
-        List<Message> messages = history.getRetrievedHistory();*/
-
-        int messages = Objects.requireNonNull(takeRoleChannel).getHistory().size();
+        assert takeRoleChannel != null;
+        MessageHistory history = MessageHistory.getHistoryFromBeginning(takeRoleChannel).complete();
+        int messages = history.getRetrievedHistory().size();
 
         if (messages == 1) {
             return;
@@ -46,13 +43,13 @@ public class EmbedsSender {
 
             takeRoleEmbed.setTitle("\uD83D\uDCCC ・ Rôles")
                     .setDescription("Séléctionne les rôles à l'aide des boutons ci-dessous pour avoir des pings personnalisés et avoir accès à des salons sépcifiques !")
-                    .addField("Mentions", """
+                    .addField("__Mentions__", """
                             \uD83D\uDCCA ・ Sondages
                             \uD83D\uDCE2 ・ Annonces
                             \uD83C\uDF89 ・ Events
                             \uD83D\uDCDA ・ Informations intéressantes
                             """, true)
-                    .addField("Accès salons spécifiques", """
+                    .addField("__Accès salons spécifiques__", """
                             \uD83C\uDF33 ・ Minecraft
                             \uD83D\uDD28 ・ Hardware/Tech
                             """, true)
@@ -65,7 +62,9 @@ public class EmbedsSender {
                             Button.primary("ROLE_POLLS", Emoji.fromFormatted("\uD83D\uDCCA")),
                             Button.primary("ROLE_ANNOUNCEMENTS", Emoji.fromFormatted("\uD83D\uDCE2")),
                             Button.primary("ROLE_EVENTS", Emoji.fromFormatted("\uD83C\uDF89")),
-                            Button.primary("ROLE_INTERESTING-INFORMATIONS", Emoji.fromFormatted("\uD83D\uDCDA")),
+                            Button.primary("ROLE_INTERESTING-INFORMATIONS", Emoji.fromFormatted("\uD83D\uDCDA"))
+                    )
+                    .addActionRow(
                             Button.primary("ROLE_MINECRAFT", Emoji.fromFormatted("\uD83C\uDF33")),
                             Button.primary("ROLE_HARDWARE-TECH", Emoji.fromFormatted("\uD83D\uDD28"))
                     )
@@ -75,9 +74,9 @@ public class EmbedsSender {
 
     public void verifyEmbedSender() {
 
-        System.out.println("debug");
-
-        int messages = Objects.requireNonNull(verifyChannel).getHistory().size();
+        assert verifyChannel != null;
+        MessageHistory history = MessageHistory.getHistoryFromBeginning(verifyChannel).complete();
+        int messages = history.getRetrievedHistory().size();
 
         if (messages == 1) {
             return;
@@ -86,7 +85,7 @@ public class EmbedsSender {
         if (messages == 0) {
             EmbedBuilder verifyEmbed = new EmbedBuilder();
 
-            verifyEmbed.setTitle(" ・ Vérification")
+            verifyEmbed.setTitle("\uD83D\uDEE1️ ・ Vérification")
                     .setDescription("Bienvenue sur le discord ! Vérifie-toi en cliquant sur le bouton ci-dessous !")
                     .setImage("https://media.discordapp.net/attachments/712679066872053810/1008100888398798978/unknown.png?width=554&height=554")
                     .setColor(new Color(255, 255, 255, 1))
@@ -103,9 +102,9 @@ public class EmbedsSender {
 
     public void rulesEmbedSender() {
 
-        System.out.println("debug");
-
-        int messages = Objects.requireNonNull(rulesChannel).getHistory().size();
+        assert rulesChannel != null;
+        MessageHistory history = MessageHistory.getHistoryFromBeginning(rulesChannel).complete();
+        int messages = history.getRetrievedHistory().size();
 
         if (messages == 1) {
             return;
@@ -115,8 +114,8 @@ public class EmbedsSender {
             EmbedBuilder rulesEmbed = new EmbedBuilder();
 
             rulesEmbed.setTitle("✅ ・ Règlement du discord")
-                    .setDescription("Le règlement ci-dessous est certes léger, mais ne signifie pas fais de la merde, ça veut dire fais preuve de bon sens.")
-                    .addField("Règles", """
+                    .setDescription("Ce règlement est léger, mais léger ne signifie pas qu'il faut faire de la merde, mais veut dire de faire preuve de bon sens.")
+                    .addField("__Règles__", """
                             🔹Pas de contenu nsfw/raciste/homophobe/...
                             🔹Respecte tout le monde (y compris toi)
                             🔹Pas d'insultes premier degré

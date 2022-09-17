@@ -19,11 +19,18 @@ public class VerifyButtonListener extends ListenerAdapter {
             assert role != null;
             assert member != null;
 
-            event.getGuild().addRoleToMember(member, role)
-                    .queue();
+            if (!member.getRoles().contains(role)) {
+                event.getGuild().addRoleToMember(member, role)
+                        .queue();
 
-            event.reply("> Vérifié ! Amusues-toi bien sur le serveur !").setEphemeral(true)
-                    .queue();
+                event.reply("> Vérifié ! Amusues-toi bien sur le serveur !")
+                        .setEphemeral(true)
+                        .queue();
+            } else {
+                event.reply("> Vous êtes déjà vérifié !")
+                        .setEphemeral(true)
+                        .queue();
+            }
         }
     }
 }

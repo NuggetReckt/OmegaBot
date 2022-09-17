@@ -49,4 +49,12 @@ public class Config {
     public String getHardwareRoleId() {
         return "1020311879282855997";
     }
+
+    public String getBotChannelId() {
+        return "998975933987967028";
+    }
+
+    public String getSuggestionChannelId() {
+        return "999414109781102613";
+    }
 }
