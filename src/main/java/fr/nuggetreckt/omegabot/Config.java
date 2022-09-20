@@ -18,6 +18,10 @@ public class Config {
         return "1020323045790990446";
     }
 
+    public String getMemeCompetitionChannelId() {
+        return "1021107083267026975";
+    }
+
     public String getJoinChannelId() {
         return "995102579413487686";
     }

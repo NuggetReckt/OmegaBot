@@ -1,5 +1,6 @@
 package fr.nuggetreckt.omegabot;
 
+import fr.nuggetreckt.omegabot.commands.PollCommand;
 import fr.nuggetreckt.omegabot.commands.SuggestionCommand;
 import fr.nuggetreckt.omegabot.listeners.MemberJoinListener;
 import fr.nuggetreckt.omegabot.listeners.ReadyListener;
@@ -45,12 +46,24 @@ public class Main {
 
                 //Command Listeners
                 .addEventListeners(new SuggestionCommand())
+                .addEventListeners(new PollCommand())
 
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .build();
 
         jda.upsertCommand("suggestion", "Permet de faire une suggestion pour contribuer à l'amélioration du serveur.")
                 .addOption(OptionType.STRING, "description", "Description de votre suggestion")
+                .queue();
+        jda.upsertCommand("sondage", "Permet de créer des sondages pour les concours de memes. (Admin uniquement)")
+                .addOption(OptionType.STRING, "description", "Description du sondage.", true)
+                .addOption(OptionType.MENTIONABLE, "user1", "Ajoute l'utilisateur au sondage du concours.", true)
+                .addOption(OptionType.MENTIONABLE, "user2", "Ajoute l'utilisateur au sondage du concours.", true)
+                .addOption(OptionType.MENTIONABLE, "user3", "Ajoute l'utilisateur au sondage du concours.", false)
+                .addOption(OptionType.MENTIONABLE, "user4", "Ajoute l'utilisateur au sondage du concours.", false)
+                .addOption(OptionType.MENTIONABLE, "user5", "Ajoute l'utilisateur au sondage du concours.", false)
+                .addOption(OptionType.MENTIONABLE, "user6", "Ajoute l'utilisateur au sondage du concours.", false)
+                .addOption(OptionType.MENTIONABLE, "user7", "Ajoute l'utilisateur au sondage du concours.", false)
+                .addOption(OptionType.MENTIONABLE, "user8", "Ajoute l'utilisateur au sondage du concours.", false)
                 .queue();
     }
 }

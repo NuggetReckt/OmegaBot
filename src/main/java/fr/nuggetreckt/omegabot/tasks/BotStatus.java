@@ -13,12 +13,12 @@ public class BotStatus {
     public void setStatus() {
         List<String> status = new ArrayList<>();
 
-        status.add("Dev avec ❤️ par NuggetReckt");
+        status.add("Dev avec ❤ par NuggetReckt");
         status.add("OmegaBot !");
         status.add("(Rejoignez play.noskillworld.fr)");
         status.add("Herbyvor >>>> ALL");
-        status.add(":bread:");
-        status.add("Pog");
+        status.add("\uD83C\uDF5E");
+        status.add("PogBot");
         status.add("Stanley Kubrick était chargé par le gouvernement américain de faire des fausses vidéos de pas sur la lune. Mais il était si perfectionniste qu'il l'a finalement fait sur place.");
 
         Random r = new Random();

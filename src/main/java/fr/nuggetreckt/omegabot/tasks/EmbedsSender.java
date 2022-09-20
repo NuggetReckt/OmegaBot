@@ -85,7 +85,7 @@ public class EmbedsSender {
         if (messages == 0) {
             EmbedBuilder verifyEmbed = new EmbedBuilder();
 
-            verifyEmbed.setTitle("\uD83D\uDEE1️ ・ Vérification")
+            verifyEmbed.setTitle("\uD83D\uDEE1 ・ Vérification")
                     .setDescription("Bienvenue sur le discord ! Vérifie-toi en cliquant sur le bouton ci-dessous !")
                     .setImage("https://media.discordapp.net/attachments/712679066872053810/1008100888398798978/unknown.png?width=554&height=554")
                     .setColor(new Color(255, 255, 255, 1))
