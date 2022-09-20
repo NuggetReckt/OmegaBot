@@ -86,10 +86,7 @@ public class PollCommand extends ListenerAdapter {
             String s = emojis.get(i) + " " + Objects.requireNonNull(member.get(i).getAsMember()).getAsMention() + "\n";
             list.add(s);
         }
-        for (String i : list) {
-            return i;
-        }
-        return null;
+        return list.toString();
     }
 
     public String getStatus(int id) {
