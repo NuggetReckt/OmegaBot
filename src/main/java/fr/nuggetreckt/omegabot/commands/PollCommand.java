@@ -30,12 +30,13 @@ public class PollCommand extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
-        if (event.getName().equals("sondage")) {
-            if (Objects.requireNonNull(event.getMember()).hasPermission(Permission.ADMINISTRATOR)) {
-                TextChannel botChannel = jda.getTextChannelById(new Config().getBotChannelId());
-                TextChannel pollChannel = jda.getTextChannelById(new Config().getPollChannelId());
-                TextChannel memeCompetitionChannel = jda.getTextChannelById(new Config().getMemeCompetitionChannelId());
+        if (event.getName().equals("sondage") && Objects.requireNonNull(event.getMember()).hasPermission(Permission.ADMINISTRATOR)) {
 
+            TextChannel botChannel = jda.getTextChannelById(new Config().getBotChannelId());
+            //TextChannel pollChannel = jda.getTextChannelById(new Config().getPollChannelId());
+            TextChannel memeCompetitionChannel = jda.getTextChannelById(new Config().getMemeCompetitionChannelId());
+
+            if (Objects.equals(event.getSubcommandName(), "concours-de-memes")) {
                 if (event.getChannel().equals(botChannel)) {
                     users = event.getOptionsByType(OptionType.MENTIONABLE).size();
                     member = event.getOptionsByType(OptionType.MENTIONABLE);
@@ -82,11 +83,15 @@ public class PollCommand extends ListenerAdapter {
 
     public String getParticipants() {
         List<String> list = new ArrayList<>();
+        StringBuilder builder = new StringBuilder();
         for (int i = 0; i < users; i++) {
             String s = emojis.get(i) + " " + Objects.requireNonNull(member.get(i).getAsMember()).getAsMention() + "\n";
             list.add(s);
         }
-        return list.toString();
+        for (String i : list) {
+            builder.append(i);
+        }
+        return builder.toString();
     }
 
     public String getStatus(int id) {

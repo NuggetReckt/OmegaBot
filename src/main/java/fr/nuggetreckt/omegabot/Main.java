@@ -1,5 +1,6 @@
 package fr.nuggetreckt.omegabot;
 
+import fr.nuggetreckt.omegabot.commands.CommandManager;
 import fr.nuggetreckt.omegabot.commands.PollCommand;
 import fr.nuggetreckt.omegabot.commands.SuggestionCommand;
 import fr.nuggetreckt.omegabot.listeners.MemberJoinListener;
@@ -9,7 +10,6 @@ import fr.nuggetreckt.omegabot.listeners.VerifyButtonListener;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 
 public class Main {
@@ -39,6 +39,7 @@ public class Main {
                 //Basic Listeners
                 .addEventListeners(new ReadyListener())
                 .addEventListeners(new MemberJoinListener())
+                .addEventListeners(new CommandManager())
 
                 //Button Listeners
                 .addEventListeners(new VerifyButtonListener())
@@ -50,20 +51,5 @@ public class Main {
 
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .build();
-
-        jda.upsertCommand("suggestion", "Permet de faire une suggestion pour contribuer à l'amélioration du serveur.")
-                .addOption(OptionType.STRING, "description", "Description de votre suggestion")
-                .queue();
-        jda.upsertCommand("sondage", "Permet de créer des sondages pour les concours de memes. (Admin uniquement)")
-                .addOption(OptionType.STRING, "description", "Description du sondage.", true)
-                .addOption(OptionType.MENTIONABLE, "user1", "Ajoute l'utilisateur au sondage du concours.", true)
-                .addOption(OptionType.MENTIONABLE, "user2", "Ajoute l'utilisateur au sondage du concours.", true)
-                .addOption(OptionType.MENTIONABLE, "user3", "Ajoute l'utilisateur au sondage du concours.", false)
-                .addOption(OptionType.MENTIONABLE, "user4", "Ajoute l'utilisateur au sondage du concours.", false)
-                .addOption(OptionType.MENTIONABLE, "user5", "Ajoute l'utilisateur au sondage du concours.", false)
-                .addOption(OptionType.MENTIONABLE, "user6", "Ajoute l'utilisateur au sondage du concours.", false)
-                .addOption(OptionType.MENTIONABLE, "user7", "Ajoute l'utilisateur au sondage du concours.", false)
-                .addOption(OptionType.MENTIONABLE, "user8", "Ajoute l'utilisateur au sondage du concours.", false)
-                .queue();
     }
 }
