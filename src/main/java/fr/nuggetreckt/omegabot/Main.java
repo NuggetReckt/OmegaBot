@@ -1,8 +1,6 @@
 package fr.nuggetreckt.omegabot;
 
 import fr.nuggetreckt.omegabot.commands.CommandManager;
-import fr.nuggetreckt.omegabot.commands.PollCommand;
-import fr.nuggetreckt.omegabot.commands.SuggestionCommand;
 import fr.nuggetreckt.omegabot.listeners.MemberJoinListener;
 import fr.nuggetreckt.omegabot.listeners.ReadyListener;
 import fr.nuggetreckt.omegabot.listeners.RoleButtonListener;
@@ -44,10 +42,6 @@ public class Main {
                 //Button Listeners
                 .addEventListeners(new VerifyButtonListener())
                 .addEventListeners(new RoleButtonListener())
-
-                //Command Listeners
-                .addEventListeners(new SuggestionCommand())
-                .addEventListeners(new PollCommand())
 
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .build();
