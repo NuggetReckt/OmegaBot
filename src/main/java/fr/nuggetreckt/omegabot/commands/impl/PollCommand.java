@@ -48,8 +48,9 @@ public class PollCommand extends Command {
                         .setTimestamp(new Date().toInstant());
 
                 if (Objects.equals(event.getSubcommandGroup(), "create")) {
-                    organizer = event.getMember();
                     ended = false;
+
+                    organizer = event.getMember();
                     pollEmbed.setDescription(Objects.requireNonNull(event.getOption("description")).getAsString());
 
                     if (Objects.equals(event.getSubcommandName(), "meme-contest")) {
@@ -116,9 +117,9 @@ public class PollCommand extends Command {
                     }
                 }
                 if (Objects.equals(event.getSubcommandGroup(), "endvote")) {
-
                     ended = true;
                     //int percentage;
+
                     HashMap<Integer, Member> votes = new HashMap<>();
 
                     if (Objects.equals(event.getSubcommandName(), "meme-contest")) {
@@ -158,6 +159,10 @@ public class PollCommand extends Command {
                                 .addField("__Choix__ ", getChoices(), true);
 
                         message.editMessageEmbeds(pollEmbed.build()).queue();
+
+                        event.reply("> Résultats envoyés avec succès.")
+                                .setEphemeral(true)
+                                .queue();
                     }
                 }
             } else {
