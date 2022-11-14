@@ -1,17 +1,18 @@
-package fr.nuggetreckt.omegabot.listeners;
+package fr.nuggetreckt.omegabot.buttons.impl;
 
 import fr.nuggetreckt.omegabot.Config;
+import fr.nuggetreckt.omegabot.buttons.Button;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class RoleButtonListener extends ListenerAdapter {
+public class RoleButton extends Button {
+
     @Override
-    public void onButtonInteraction(@NotNull ButtonInteractionEvent event) {
+    public void execute(@NotNull ButtonInteractionEvent event) {
         if (event.getComponentId().contains("ROLE")) {
             Member member = event.getMember();
             assert member != null;
