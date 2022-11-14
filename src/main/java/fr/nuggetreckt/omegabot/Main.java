@@ -56,5 +56,4 @@ public class Main {
         jda.addEventListener(new CommandListener(jda));
         jda.addEventListener(new ButtonListener(jda));
     }
-
 }
