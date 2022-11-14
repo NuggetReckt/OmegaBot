@@ -1,5 +1,7 @@
 package fr.nuggetreckt.omegabot;
 
+import fr.nuggetreckt.omegabot.buttons.ButtonListener;
+import fr.nuggetreckt.omegabot.commands.CommandListener;
 import fr.nuggetreckt.omegabot.commands.CommandManager;
 import fr.nuggetreckt.omegabot.listeners.MemberJoinListener;
 import fr.nuggetreckt.omegabot.listeners.ReadyListener;
@@ -49,6 +51,10 @@ public class Main {
 
         //Register Commands
         jda.addEventListener(new CommandManager());
+
+        //Commands/Buttons Events
+        jda.addEventListener(new CommandListener(jda));
+        jda.addEventListener(new ButtonListener(jda));
     }
 
 }

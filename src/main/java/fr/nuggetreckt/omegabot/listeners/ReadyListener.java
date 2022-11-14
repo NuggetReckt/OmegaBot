@@ -1,6 +1,5 @@
 package fr.nuggetreckt.omegabot.listeners;
 
-import fr.nuggetreckt.omegabot.commands.CommandListener;
 import fr.nuggetreckt.omegabot.tasks.BotStatus;
 import fr.nuggetreckt.omegabot.tasks.EmbedsSender;
 import net.dv8tion.jda.api.events.GenericEvent;
@@ -27,7 +26,6 @@ public class ReadyListener implements EventListener {
 
             new EmbedsSender().SendEmbeds();
             new BotStatus().setStatus();
-            new CommandListener(jda);
         }
     }
 }
