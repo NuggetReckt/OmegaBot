@@ -6,6 +6,15 @@
         <language minSize="60" name="Java" />
       </Languages>
     </inspection_tool>
+    <inspection_tool class="MavenPackageUpdate" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="excludeList">
+        <list>
+          <option value="ch.qos.logback:logback-classic" />
+          <option value="org.slf4j:slf4j-api" />
+          <option value="org.slf4j:slf4j-simple" />
+        </list>
+      </option>
+    </inspection_tool>
     <inspection_tool class="MisspelledHeader" enabled="true" level="WEAK WARNING" enabled_by_default="true">
       <option name="CUSTOM_HEADERS">
         <header value="Archiver-Version" />
