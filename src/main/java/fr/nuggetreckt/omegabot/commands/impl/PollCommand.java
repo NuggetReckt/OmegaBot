@@ -6,17 +6,16 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.util.*;
 import java.util.List;
-
-import static fr.nuggetreckt.omegabot.Main.jda;
+import java.util.*;
 
 public class PollCommand extends Command {
 
@@ -30,11 +29,11 @@ public class PollCommand extends Command {
     Member organizer, winner;
 
     @Override
-    public void execute(SlashCommandInteractionEvent event) {
+    public void execute(@NotNull SlashCommandInteractionEvent event) {
         if (Objects.requireNonNull(event.getMember()).hasPermission(Permission.ADMINISTRATOR)) {
-            TextChannel botChannel = jda.getTextChannelById(new Config().getBotChannelId());
-            TextChannel pollChannel = jda.getTextChannelById(new Config().getPollChannelId());
-            TextChannel memeCompetitionChannel = jda.getTextChannelById(new Config().getMemeCompetitionChannelId());
+            MessageChannel botChannel = new Config().getBotChannel();
+            MessageChannel pollChannel = new Config().getPollChannel();
+            MessageChannel memeCompetitionChannel = new Config().getMemeCompetitionChannel();
 
             if (event.getChannel().equals(botChannel)) {
                 pollEmbed.clear();

@@ -18,17 +18,16 @@ public class RoleButton extends Button {
             assert member != null;
 
             if (Objects.requireNonNull(event.getButton().getId()).equals("ROLE_POLLS")) {
-                Role role = Objects.requireNonNull(event.getGuild()).getRoleById(new Config().getPollsRoleId());
-                assert role != null;
+                Role role = new Config().getPollsRole();
 
                 if (!member.getRoles().contains(role)) {
-                    event.getGuild().addRoleToMember(member, role)
+                    Objects.requireNonNull(event.getGuild()).addRoleToMember(member, role)
                             .queue();
 
                     event.reply("> Rôle " + role.getAsMention() + " ajouté avec succès.").setEphemeral(true)
                             .queue();
                 } else {
-                    event.getGuild().removeRoleFromMember(member, role)
+                    Objects.requireNonNull(event.getGuild()).removeRoleFromMember(member, role)
                             .queue();
 
                     event.reply("> Rôle " + role.getAsMention() + " retiré avec succès.").setEphemeral(true)
@@ -37,17 +36,16 @@ public class RoleButton extends Button {
             }
 
             if (Objects.requireNonNull(event.getButton().getId()).equals("ROLE_ANNOUNCEMENTS")) {
-                Role role = Objects.requireNonNull(event.getGuild()).getRoleById(new Config().getAnnouncementRoleId());
-                assert role != null;
+                Role role = new Config().getAnnouncementsRole();
 
                 if (!member.getRoles().contains(role)) {
-                    event.getGuild().addRoleToMember(member, role)
+                    Objects.requireNonNull(event.getGuild()).addRoleToMember(member, role)
                             .queue();
 
                     event.reply("> Rôle " + role.getAsMention() + " ajouté avec succès.").setEphemeral(true)
                             .queue();
                 } else {
-                    event.getGuild().removeRoleFromMember(member, role)
+                    Objects.requireNonNull(event.getGuild()).removeRoleFromMember(member, role)
                             .queue();
 
                     event.reply("> Rôle " + role.getAsMention() + " retiré avec succès.").setEphemeral(true)
@@ -56,17 +54,16 @@ public class RoleButton extends Button {
             }
 
             if (Objects.requireNonNull(event.getButton().getId()).equals("ROLE_EVENTS")) {
-                Role role = Objects.requireNonNull(event.getGuild()).getRoleById(new Config().getEventRoleId());
-                assert role != null;
+                Role role = new Config().getEventsRole();
 
                 if (!member.getRoles().contains(role)) {
-                    event.getGuild().addRoleToMember(member, role)
+                    Objects.requireNonNull(event.getGuild()).addRoleToMember(member, role)
                             .queue();
 
                     event.reply("> Rôle " + role.getAsMention() + " ajouté avec succès.").setEphemeral(true)
                             .queue();
                 } else {
-                    event.getGuild().removeRoleFromMember(member, role)
+                    Objects.requireNonNull(event.getGuild()).removeRoleFromMember(member, role)
                             .queue();
 
                     event.reply("> Rôle " + role.getAsMention() + " retiré avec succès.").setEphemeral(true)
@@ -75,17 +72,16 @@ public class RoleButton extends Button {
             }
 
             if (Objects.requireNonNull(event.getButton().getId()).equals("ROLE_INTERESTING-INFORMATIONS")) {
-                Role role = Objects.requireNonNull(event.getGuild()).getRoleById(new Config().getInterestingInformationsRoleId());
-                assert role != null;
+                Role role = new Config().getInterestingInformationsRole();
 
                 if (!member.getRoles().contains(role)) {
-                    event.getGuild().addRoleToMember(member, role)
+                    Objects.requireNonNull(event.getGuild()).addRoleToMember(member, role)
                             .queue();
 
                     event.reply("> Rôle " + role.getAsMention() + " ajouté avec succès.").setEphemeral(true)
                             .queue();
                 } else {
-                    event.getGuild().removeRoleFromMember(member, role)
+                    Objects.requireNonNull(event.getGuild()).removeRoleFromMember(member, role)
                             .queue();
 
                     event.reply("> Rôle " + role.getAsMention() + " retiré avec succès.").setEphemeral(true)
@@ -94,17 +90,16 @@ public class RoleButton extends Button {
             }
 
             if (Objects.requireNonNull(event.getButton().getId()).equals("ROLE_MINECRAFT")) {
-                Role role = Objects.requireNonNull(event.getGuild()).getRoleById(new Config().getMinecraftRoleId());
-                assert role != null;
+                Role role = new Config().getMinecraftRole();
 
                 if (!member.getRoles().contains(role)) {
-                    event.getGuild().addRoleToMember(member, role)
+                    Objects.requireNonNull(event.getGuild()).addRoleToMember(member, role)
                             .queue();
 
                     event.reply("> Rôle " + role.getAsMention() + " ajouté avec succès.").setEphemeral(true)
                             .queue();
                 } else {
-                    event.getGuild().removeRoleFromMember(member, role)
+                    Objects.requireNonNull(event.getGuild()).removeRoleFromMember(member, role)
                             .queue();
 
                     event.reply("> Rôle " + role.getAsMention() + " retiré avec succès.").setEphemeral(true)
@@ -113,17 +108,16 @@ public class RoleButton extends Button {
             }
 
             if (Objects.requireNonNull(event.getButton().getId()).equals("ROLE_HARDWARE-TECH")) {
-                Role role = Objects.requireNonNull(event.getGuild()).getRoleById(new Config().getHardwareRoleId());
-                assert role != null;
+                Role role = new Config().getHardwareRole();
 
                 if (!member.getRoles().contains(role)) {
-                    event.getGuild().addRoleToMember(member, role)
+                    Objects.requireNonNull(event.getGuild()).addRoleToMember(member, role)
                             .queue();
 
                     event.reply("> Rôle " + role.getAsMention() + " ajouté avec succès.").setEphemeral(true)
                             .queue();
                 } else {
-                    event.getGuild().removeRoleFromMember(member, role)
+                    Objects.requireNonNull(event.getGuild()).removeRoleFromMember(member, role)
                             .queue();
 
                     event.reply("> Rôle " + role.getAsMention() + " retiré avec succès.").setEphemeral(true)

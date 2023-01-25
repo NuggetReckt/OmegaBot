@@ -1,14 +1,15 @@
 package fr.nuggetreckt.omegabot.tasks;
 
+import fr.nuggetreckt.omegabot.Main;
 import net.dv8tion.jda.api.entities.Activity;
 
 import java.util.*;
 
-import static fr.nuggetreckt.omegabot.Main.jda;
-
 public class BotStatus {
     final int ChangeStatusInterval = 24000;
     final int second = 1000;
+
+    private final Main main = Main.getInstance();
 
     public void setStatus() {
         List<String> status = new ArrayList<>();
@@ -28,7 +29,7 @@ public class BotStatus {
             @Override
             public void run() {
                 int a = r.nextInt(status.size() - 1);
-                jda.getPresence().setActivity(Activity.playing(String.valueOf(status.get(a))));
+                main.getJDA().getPresence().setActivity(Activity.playing(String.valueOf(status.get(a))));
             }
         }, second, ChangeStatusInterval);
     }

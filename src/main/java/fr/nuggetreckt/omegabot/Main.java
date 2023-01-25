@@ -9,16 +9,24 @@ import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Main {
 
-    public static JDA jda;
-    public static Dotenv dotenv;
-    public static String token;
+    public JDA jda;
+    public Dotenv dotenv;
+
+    private String token;
+
+    private static Main instance;
+
+    private final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public void main(String[] args) throws RuntimeException {
+        instance = this;
 
-        System.out.println("Vérification du Token...");
+        getLogger().info("Vérification du Token...");
 
         dotenv = Dotenv.configure()
                 .directory("/env/")
@@ -31,7 +39,7 @@ public class Main {
             throw new RuntimeException(e);
         }
 
-        System.out.println("Token bon. Lancement du bot...");
+        getLogger().info("Token bon. Lancement du bot...");
 
         this.Build();
     }
@@ -55,5 +63,21 @@ public class Main {
         //Commands/Buttons Events
         jda.addEventListener(new CommandListener(jda));
         jda.addEventListener(new ButtonListener(jda));
+    }
+
+    public static Main getInstance() {
+        return instance;
+    }
+
+    public JDA getJDA() {
+        return jda;
+    }
+
+    public Logger getLogger () {
+        return logger;
+    }
+
+    public String getVersion() {
+        return getInstance().getClass().getPackage().getImplementationVersion();
     }
 }

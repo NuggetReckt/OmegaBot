@@ -3,20 +3,18 @@ package fr.nuggetreckt.omegabot.tasks;
 import fr.nuggetreckt.omegabot.Config;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageHistory;
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 import java.awt.*;
 import java.util.Date;
 
-import static fr.nuggetreckt.omegabot.Main.jda;
-
 public class EmbedsSender {
 
-    final TextChannel takeRoleChannel = jda.getTextChannelById(new Config().getTakeRoleChannelId());
-    final TextChannel verifyChannel = jda.getTextChannelById(new Config().getVerifyChannelId());
-    final TextChannel rulesChannel = jda.getTextChannelById(new Config().getRulesChannelId());
+    private final MessageChannel takeRoleChannel = new Config().getTakeRoleChannel();
+    private final MessageChannel verifyChannel = new Config().getVerifyChannel();
+    private final MessageChannel rulesChannel = new Config().getRulesChannel();
 
     public void SendEmbeds() {
         try {
@@ -30,7 +28,6 @@ public class EmbedsSender {
 
     public void takeRoleEmbedSender() {
 
-        assert takeRoleChannel != null;
         MessageHistory history = MessageHistory.getHistoryFromBeginning(takeRoleChannel).complete();
         int messages = history.getRetrievedHistory().size();
 
@@ -73,8 +70,6 @@ public class EmbedsSender {
     }
 
     public void verifyEmbedSender() {
-
-        assert verifyChannel != null;
         MessageHistory history = MessageHistory.getHistoryFromBeginning(verifyChannel).complete();
         int messages = history.getRetrievedHistory().size();
 
@@ -101,8 +96,6 @@ public class EmbedsSender {
     }
 
     public void rulesEmbedSender() {
-
-        assert rulesChannel != null;
         MessageHistory history = MessageHistory.getHistoryFromBeginning(rulesChannel).complete();
         int messages = history.getRetrievedHistory().size();
 

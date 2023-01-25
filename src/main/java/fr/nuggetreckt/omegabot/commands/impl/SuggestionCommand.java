@@ -4,24 +4,21 @@ import fr.nuggetreckt.omegabot.Config;
 import fr.nuggetreckt.omegabot.commands.Command;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.Date;
 import java.util.Objects;
 
-import static fr.nuggetreckt.omegabot.Main.jda;
-
 public class SuggestionCommand extends Command {
-    @Override
-    public void execute(SlashCommandInteractionEvent event) {
 
-        TextChannel botchannel = jda.getTextChannelById(new Config().getBotChannelId());
-        TextChannel suggestionchannel = jda.getTextChannelById(new Config().getSuggestionChannelId());
-        assert botchannel != null;
-        assert suggestionchannel != null;
+    @Override
+    public void execute(@NotNull SlashCommandInteractionEvent event) {
+        MessageChannel botchannel = new Config().getBotChannel();
+        MessageChannel suggestionchannel = new Config().getSuggestionChannel();
 
         if (event.getChannel().equals(botchannel)) {
             if (event.getOption("description") != null) {

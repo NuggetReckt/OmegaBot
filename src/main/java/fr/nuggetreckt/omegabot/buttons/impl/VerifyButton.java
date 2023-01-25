@@ -15,16 +15,15 @@ public class VerifyButton extends Button {
     public void execute(@NotNull ButtonInteractionEvent event) {
         if (event.getComponentId().equals("VERIFY")) {
             Member member = event.getMember();
-            Role role = Objects.requireNonNull(event.getGuild()).getRoleById(new Config().getMemberRoleId());
+            Role role = new Config().getMemberRole();
 
-            assert role != null;
             assert member != null;
 
             if (!member.getRoles().contains(role)) {
-                event.getGuild().addRoleToMember(member, role)
+                Objects.requireNonNull(event.getGuild()).addRoleToMember(member, role)
                         .queue();
 
-                event.reply("> Vérifié ! Amusues-toi bien sur le serveur !")
+                event.reply("> Vérifié ! Amuses-toi bien sur le serveur !")
                         .setEphemeral(true)
                         .queue();
             } else {
