@@ -13,7 +13,7 @@ public class CommandListener extends ListenerAdapter {
 
     HashMap<String, Command> commands = new HashMap<>();
 
-    public CommandListener(JDA jda) {
+    public CommandListener(@NotNull JDA jda) {
         jda.addEventListener(this);
 
         commands.put("sondage", new PollCommand());

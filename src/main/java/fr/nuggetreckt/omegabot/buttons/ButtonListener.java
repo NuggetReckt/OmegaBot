@@ -13,7 +13,7 @@ public class ButtonListener extends ListenerAdapter {
 
     HashMap<String, Button> buttons = new HashMap<>();
 
-    public ButtonListener(JDA jda) {
+    public ButtonListener(@NotNull JDA jda) {
         jda.addEventListener(this);
 
         buttons.put("role", new RoleButton());

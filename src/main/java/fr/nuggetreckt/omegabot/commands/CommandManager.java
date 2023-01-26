@@ -40,7 +40,7 @@ public class CommandManager extends ListenerAdapter {
                 .addSubcommands(new SubcommandData("poll", "Termine la phase de vote et annonce les résultats du dernier concours de memes"))
                 .addSubcommands(new SubcommandData("meme-contest", "Termine la phase de vote et annonce les résultats du dernier sondage"));
 
-        commandData.add(Commands.slash("sondage", "Permet d'interargir avec les sondages. (Admin uniquement)")
+        commandData.add(Commands.slash("sondage", "Permet d'interagir avec les sondages. (Admin uniquement)")
                 .addSubcommandGroups(createSubCommandGroupData)
                 .addSubcommandGroups(endVoteSubCommandGroupData));
 
