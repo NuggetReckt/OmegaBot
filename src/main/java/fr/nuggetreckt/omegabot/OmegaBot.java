@@ -12,19 +12,20 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Main {
+public class OmegaBot {
 
-    public JDA jda;
-    public Dotenv dotenv;
+    private JDA jda;
+    private final Dotenv dotenv;
 
-    private String token;
+    private final String token;
+    private final OmegaBot instance;
+    private final Config config;
 
-    private static Main instance;
+    private final Logger logger = LoggerFactory.getLogger(OmegaBot.class);
 
-    private final Logger logger = LoggerFactory.getLogger(Main.class);
-
-    public void main(String[] args) throws RuntimeException {
+    public OmegaBot() throws RuntimeException {
         instance = this;
+        config = new Config(this);
 
         getLogger().info("Vérification du Token...");
 
@@ -41,31 +42,31 @@ public class Main {
 
         getLogger().info("Token bon. Lancement du bot...");
 
-        this.Build();
+        build();
     }
 
-    public void Build() {
+    public void build() {
         jda = JDABuilder.createDefault(token)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .build();
 
-        this.RegisterEvents();
+        registerEvents();
     }
 
-    public void RegisterEvents() {
+    public void registerEvents() {
         //Simple Events
-        jda.addEventListener(new ReadyListener());
-        jda.addEventListener(new MemberJoinListener());
+        jda.addEventListener(new ReadyListener(instance));
+        jda.addEventListener(new MemberJoinListener(instance));
 
         //Register Commands
         jda.addEventListener(new CommandManager());
 
         //Commands/Buttons Events
-        jda.addEventListener(new CommandListener(jda));
-        jda.addEventListener(new ButtonListener(jda));
+        jda.addEventListener(new CommandListener(this));
+        jda.addEventListener(new ButtonListener(this));
     }
 
-    public static Main getInstance() {
+    public OmegaBot getInstance() {
         return instance;
     }
 
@@ -73,11 +74,15 @@ public class Main {
         return jda;
     }
 
-    public Logger getLogger () {
+    public Logger getLogger() {
         return logger;
     }
 
+    public Config getConfig() {
+        return config;
+    }
+
     public String getVersion() {
-        return getInstance().getClass().getPackage().getImplementationVersion();
+        return getClass().getPackage().getImplementationVersion();
     }
 }

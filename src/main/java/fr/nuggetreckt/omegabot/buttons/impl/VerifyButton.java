@@ -1,6 +1,6 @@
 package fr.nuggetreckt.omegabot.buttons.impl;
 
-import fr.nuggetreckt.omegabot.Config;
+import fr.nuggetreckt.omegabot.OmegaBot;
 import fr.nuggetreckt.omegabot.buttons.Button;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
@@ -11,11 +11,17 @@ import java.util.Objects;
 
 public class VerifyButton extends Button {
 
+    private final OmegaBot instance;
+
+    public VerifyButton(OmegaBot instance) {
+        this.instance = instance;
+    }
+
     @Override
     public void execute(@NotNull ButtonInteractionEvent event) {
         if (event.getComponentId().equals("VERIFY")) {
             Member member = event.getMember();
-            Role role = new Config().getMemberRole();
+            Role role = instance.getConfig().getMemberRole();
 
             assert member != null;
 

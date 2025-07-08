@@ -1,6 +1,6 @@
 package fr.nuggetreckt.omegabot.listeners;
 
-import fr.nuggetreckt.omegabot.Config;
+import fr.nuggetreckt.omegabot.OmegaBot;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
@@ -11,6 +11,12 @@ import java.awt.*;
 import java.util.Date;
 
 public class MemberJoinListener extends ListenerAdapter {
+
+    private final OmegaBot instance;
+
+    public MemberJoinListener(OmegaBot instance) {
+        this.instance = instance;
+    }
 
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
@@ -26,7 +32,7 @@ public class MemberJoinListener extends ListenerAdapter {
                 .setTimestamp(new Date().toInstant());
 
         //Send embed message
-        new Config().getJoinChannel().sendMessageEmbeds(join.build())
+        instance.getConfig().getJoinChannel().sendMessageEmbeds(join.build())
                 .queue();
     }
 }

@@ -1,8 +1,7 @@
 package fr.nuggetreckt.omegabot.commands;
 
-import fr.nuggetreckt.omegabot.commands.impl.PollCommand;
+import fr.nuggetreckt.omegabot.OmegaBot;
 import fr.nuggetreckt.omegabot.commands.impl.SuggestionCommand;
-import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;
@@ -11,13 +10,22 @@ import java.util.HashMap;
 
 public class CommandListener extends ListenerAdapter {
 
-    HashMap<String, Command> commands = new HashMap<>();
+    private final HashMap<String, Command> commands;
+    private final OmegaBot instance;
 
-    public CommandListener(@NotNull JDA jda) {
-        jda.addEventListener(this);
+    public CommandListener(@NotNull OmegaBot instance) {
+        this.instance = instance;
+        this.commands = new HashMap<>();
 
-        commands.put("sondage", new PollCommand());
-        commands.put("suggestion", new SuggestionCommand());
+        registerCommands();
+    }
+
+    private void registerCommands() {
+        registerCommand("suggestion", new SuggestionCommand(instance));
+    }
+
+    private void registerCommand(String name, Command command) {
+        commands.put(name, command);
     }
 
     @Override

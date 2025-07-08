@@ -1,6 +1,6 @@
 package fr.nuggetreckt.omegabot.commands.impl;
 
-import fr.nuggetreckt.omegabot.Config;
+import fr.nuggetreckt.omegabot.OmegaBot;
 import fr.nuggetreckt.omegabot.commands.Command;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -15,10 +15,16 @@ import java.util.Objects;
 
 public class SuggestionCommand extends Command {
 
+    private final OmegaBot instance;
+
+    public SuggestionCommand(OmegaBot instance) {
+        this.instance = instance;
+    }
+
     @Override
     public void execute(@NotNull SlashCommandInteractionEvent event) {
-        MessageChannel botchannel = new Config().getBotChannel();
-        MessageChannel suggestionchannel = new Config().getSuggestionChannel();
+        MessageChannel botchannel = instance.getConfig().getBotChannel();
+        MessageChannel suggestionchannel = instance.getConfig().getSuggestionChannel();
 
         if (event.getChannel().equals(botchannel)) {
             if (event.getOption("description") != null) {

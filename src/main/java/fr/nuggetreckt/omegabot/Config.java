@@ -5,6 +5,12 @@ import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
 public class Config {
 
+    private final OmegaBot instance;
+
+    public Config(OmegaBot instance) {
+        this.instance = instance;
+    }
+
     //Channels ids
     public String verifyChannelId = "1020311084760047626";
     public String rulesChannelId = "1020311186123796511";
@@ -24,65 +30,63 @@ public class Config {
     public String minecraftRoleId = "1020311837532758046";
     public String hardwareRoleId = "1020311879282855997";
 
-    private final Main main = Main.getInstance();
-
     public MessageChannel getVerifyChannel() {
-        return main.getJDA().getTextChannelById(verifyChannelId);
+        return instance.getJDA().getTextChannelById(verifyChannelId);
     }
 
     public MessageChannel getRulesChannel() {
-        return main.getJDA().getTextChannelById(rulesChannelId);
+        return instance.getJDA().getTextChannelById(rulesChannelId);
     }
 
     public MessageChannel getTakeRoleChannel() {
-        return main.getJDA().getTextChannelById(takeRoleChannelId);
+        return instance.getJDA().getTextChannelById(takeRoleChannelId);
     }
 
     public MessageChannel getPollChannel() {
-        return main.getJDA().getTextChannelById(pollChannelId);
+        return instance.getJDA().getTextChannelById(pollChannelId);
     }
 
     public MessageChannel getMemeCompetitionChannel() {
-        return main.getJDA().getTextChannelById(memeCompetitionChannelId);
+        return instance.getJDA().getTextChannelById(memeCompetitionChannelId);
     }
 
     public MessageChannel getJoinChannel() {
-        return main.getJDA().getTextChannelById(joinChannelId);
+        return instance.getJDA().getTextChannelById(joinChannelId);
     }
 
     public MessageChannel getBotChannel() {
-        return main.getJDA().getTextChannelById(botChannelId);
+        return instance.getJDA().getTextChannelById(botChannelId);
     }
 
     public MessageChannel getSuggestionChannel() {
-        return main.getJDA().getTextChannelById(suggestionChannelId);
+        return instance.getJDA().getTextChannelById(suggestionChannelId);
     }
 
     public Role getMemberRole() {
-        return main.getJDA().getRoleById(memberRoleId);
+        return instance.getJDA().getRoleById(memberRoleId);
     }
 
     public Role getPollsRole() {
-        return main.getJDA().getRoleById(pollsRoleId);
+        return instance.getJDA().getRoleById(pollsRoleId);
     }
 
     public Role getAnnouncementsRole() {
-        return main.getJDA().getRoleById(announcementsRoleId);
+        return instance.getJDA().getRoleById(announcementsRoleId);
     }
 
     public Role getEventsRole() {
-        return main.getJDA().getRoleById(eventsRoleId);
+        return instance.getJDA().getRoleById(eventsRoleId);
     }
 
     public Role getInterestingInformationsRole() {
-        return main.getJDA().getRoleById(interestingInformationsRoleId);
+        return instance.getJDA().getRoleById(interestingInformationsRoleId);
     }
 
     public Role getMinecraftRole() {
-        return main.getJDA().getRoleById(minecraftRoleId);
+        return instance.getJDA().getRoleById(minecraftRoleId);
     }
 
     public Role getHardwareRole() {
-        return main.getJDA().getRoleById(hardwareRoleId);
+        return instance.getJDA().getRoleById(hardwareRoleId);
     }
 }
