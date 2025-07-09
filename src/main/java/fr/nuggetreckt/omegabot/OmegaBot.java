@@ -4,6 +4,7 @@ import fr.nuggetreckt.omegabot.buttons.ButtonListener;
 import fr.nuggetreckt.omegabot.commands.CommandListener;
 import fr.nuggetreckt.omegabot.commands.CommandManager;
 import fr.nuggetreckt.omegabot.listeners.MemberJoinListener;
+import fr.nuggetreckt.omegabot.listeners.MemberMessageListener;
 import fr.nuggetreckt.omegabot.listeners.ReadyListener;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
@@ -48,6 +49,8 @@ public class OmegaBot {
     public void build() {
         jda = JDABuilder.createDefault(token)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
+                .enableIntents(GatewayIntent.GUILD_MESSAGES)
+                .enableIntents(GatewayIntent.MESSAGE_CONTENT)
                 .build();
 
         registerEvents();
@@ -57,6 +60,7 @@ public class OmegaBot {
         //Simple Events
         jda.addEventListener(new ReadyListener(instance));
         jda.addEventListener(new MemberJoinListener(instance));
+        jda.addEventListener(new MemberMessageListener(instance));
 
         //Register Commands
         jda.addEventListener(new CommandManager());

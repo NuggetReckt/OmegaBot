@@ -15,8 +15,7 @@ public class Config {
     public String verifyChannelId = "1020311084760047626";
     public String rulesChannelId = "1020311186123796511";
     public String takeRoleChannelId = "1020311310220673054";
-    public String pollChannelId = "1020323045790990446";
-    public String memeCompetitionChannelId = "1021107083267026975";
+    public String countChannelId = "1021107083267026975";
     public String joinChannelId = "995102579413487686";
     public String botChannelId = "998975933987967028";
     public String suggestionChannelId = "999414109781102613";
@@ -42,12 +41,8 @@ public class Config {
         return instance.getJDA().getTextChannelById(takeRoleChannelId);
     }
 
-    public MessageChannel getPollChannel() {
-        return instance.getJDA().getTextChannelById(pollChannelId);
-    }
-
-    public MessageChannel getMemeCompetitionChannel() {
-        return instance.getJDA().getTextChannelById(memeCompetitionChannelId);
+    public MessageChannel getCountChannel() {
+        return instance.getJDA().getTextChannelById(countChannelId);
     }
 
     public MessageChannel getJoinChannel() {
