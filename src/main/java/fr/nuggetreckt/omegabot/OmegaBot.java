@@ -1,11 +1,12 @@
 package fr.nuggetreckt.omegabot;
 
-import fr.nuggetreckt.omegabot.buttons.ButtonListener;
-import fr.nuggetreckt.omegabot.commands.CommandListener;
-import fr.nuggetreckt.omegabot.commands.CommandManager;
-import fr.nuggetreckt.omegabot.listeners.MemberJoinListener;
-import fr.nuggetreckt.omegabot.listeners.MemberMessageListener;
-import fr.nuggetreckt.omegabot.listeners.ReadyListener;
+import fr.nuggetreckt.omegabot.button.ButtonListener;
+import fr.nuggetreckt.omegabot.command.CommandListener;
+import fr.nuggetreckt.omegabot.command.CommandManager;
+import fr.nuggetreckt.omegabot.listener.MemberJoinListener;
+import fr.nuggetreckt.omegabot.listener.MemberMessageListener;
+import fr.nuggetreckt.omegabot.listener.ReadyListener;
+import fr.nuggetreckt.omegabot.statistics.StatsHandler;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -22,14 +23,18 @@ public class OmegaBot {
     private final OmegaBot instance;
     private final Config config;
 
-    private final Logger logger = LoggerFactory.getLogger(OmegaBot.class);
+    private final Logger logger;
+
+    private final StatsHandler statsHandler;
 
     public OmegaBot() throws RuntimeException {
         instance = this;
+        logger = LoggerFactory.getLogger(OmegaBot.class);
         config = new Config(this);
 
-        getLogger().info("Vérification du Token...");
+        getLogger().info("Reading token...");
 
+        //Loading token
         dotenv = Dotenv.configure()
                 .directory("/env/")
                 .filename(".env")
@@ -41,7 +46,10 @@ public class OmegaBot {
             throw new RuntimeException(e);
         }
 
-        getLogger().info("Token bon. Lancement du bot...");
+        //Loading modules
+        statsHandler = new StatsHandler(this);
+
+        getLogger().info("Token OK. Launching JDA...");
 
         build();
     }
@@ -84,6 +92,10 @@ public class OmegaBot {
 
     public Config getConfig() {
         return config;
+    }
+
+    public StatsHandler getStatsHandler() {
+        return statsHandler;
     }
 
     public String getVersion() {

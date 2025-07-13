@@ -1,8 +1,8 @@
-package fr.nuggetreckt.omegabot.listeners;
+package fr.nuggetreckt.omegabot.listener;
 
 import fr.nuggetreckt.omegabot.OmegaBot;
-import fr.nuggetreckt.omegabot.tasks.BotStatus;
-import fr.nuggetreckt.omegabot.tasks.EmbedsSender;
+import fr.nuggetreckt.omegabot.task.BotStatus;
+import fr.nuggetreckt.omegabot.task.EmbedsSender;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
@@ -19,8 +19,8 @@ public class ReadyListener implements EventListener {
     @Override
     public void onEvent(@NotNull GenericEvent event) {
         if (event instanceof ReadyEvent) {
-            instance.getLogger().info(instance.getJDA().getSelfUser().getName() + " v" + instance.getVersion() + " lancé avec succès.");
-            instance.getLogger().info(instance.getJDA().getEventManager().getRegisteredListeners().size() + " Listeners chargés.");
+            instance.getLogger().info(instance.getJDA().getSelfUser().getName() + " v" + instance.getVersion() + " launched successfully.");
+            instance.getLogger().info(instance.getJDA().getEventManager().getRegisteredListeners().size() + " loaded listeners.");
             System.out.println("""
                       ____                             ____        _
                      / __ \\                           |  _ \\      | |
@@ -30,6 +30,13 @@ public class ReadyListener implements EventListener {
                      \\____/|_| |_| |_|\\___|\\__, |\\__,_|____/ \\___/ \\__|
                                             __/ |
                                            |___/""");
+
+            Thread initTask = new Thread(() -> {
+                instance.getLogger().info("Member stats initialization...");
+                instance.getStatsHandler().init();
+                instance.getLogger().info("Member stats initialized successfully.");
+            });
+            initTask.start();
 
             EmbedsSender.sendEmbeds(instance);
             BotStatus.setStatus(instance);

@@ -1,7 +1,7 @@
-package fr.nuggetreckt.omegabot.commands.impl;
+package fr.nuggetreckt.omegabot.command.impl;
 
 import fr.nuggetreckt.omegabot.OmegaBot;
-import fr.nuggetreckt.omegabot.commands.Command;
+import fr.nuggetreckt.omegabot.command.Command;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;

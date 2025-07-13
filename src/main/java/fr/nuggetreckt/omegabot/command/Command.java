@@ -1,4 +1,4 @@
-package fr.nuggetreckt.omegabot.commands;
+package fr.nuggetreckt.omegabot.command;
 
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 

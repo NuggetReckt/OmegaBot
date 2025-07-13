@@ -1,4 +1,4 @@
-package fr.nuggetreckt.omegabot.tasks;
+package fr.nuggetreckt.omegabot.task;
 
 import fr.nuggetreckt.omegabot.OmegaBot;
 import net.dv8tion.jda.api.EmbedBuilder;

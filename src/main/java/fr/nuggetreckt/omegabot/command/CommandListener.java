@@ -1,7 +1,7 @@
-package fr.nuggetreckt.omegabot.commands;
+package fr.nuggetreckt.omegabot.command;
 
 import fr.nuggetreckt.omegabot.OmegaBot;
-import fr.nuggetreckt.omegabot.commands.impl.SuggestionCommand;
+import fr.nuggetreckt.omegabot.command.impl.SuggestionCommand;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.jetbrains.annotations.NotNull;

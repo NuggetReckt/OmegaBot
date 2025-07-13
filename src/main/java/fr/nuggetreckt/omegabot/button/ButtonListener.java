@@ -1,8 +1,8 @@
-package fr.nuggetreckt.omegabot.buttons;
+package fr.nuggetreckt.omegabot.button;
 
 import fr.nuggetreckt.omegabot.OmegaBot;
-import fr.nuggetreckt.omegabot.buttons.impl.RoleButton;
-import fr.nuggetreckt.omegabot.buttons.impl.VerifyButton;
+import fr.nuggetreckt.omegabot.button.impl.RoleButton;
+import fr.nuggetreckt.omegabot.button.impl.VerifyButton;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;

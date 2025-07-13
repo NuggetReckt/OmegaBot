@@ -1,4 +1,4 @@
-package fr.nuggetreckt.omegabot.listeners;
+package fr.nuggetreckt.omegabot.listener;
 
 import fr.nuggetreckt.omegabot.OmegaBot;
 import net.dv8tion.jda.api.EmbedBuilder;

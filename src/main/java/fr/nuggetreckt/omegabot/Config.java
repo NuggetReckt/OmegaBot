@@ -1,5 +1,6 @@
 package fr.nuggetreckt.omegabot;
 
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 
@@ -10,6 +11,12 @@ public class Config {
     public Config(OmegaBot instance) {
         this.instance = instance;
     }
+
+    private boolean dev = true;
+
+    //Guilds ids
+    public String devGuildId = "986026862406950993";
+    public String guildId = "690132625398300767";
 
     //Channels ids
     public String verifyChannelId = "1020311084760047626";
@@ -28,6 +35,11 @@ public class Config {
     public String interestingInformationsRoleId = "1020311776065241190";
     public String minecraftRoleId = "1020311837532758046";
     public String hardwareRoleId = "1020311879282855997";
+
+    public Guild getGuild() {
+        if (dev) return instance.getJDA().getGuildById(devGuildId);
+        return instance.getJDA().getGuildById(guildId);
+    }
 
     public MessageChannel getVerifyChannel() {
         return instance.getJDA().getTextChannelById(verifyChannelId);

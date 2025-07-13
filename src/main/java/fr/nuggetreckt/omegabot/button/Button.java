@@ -1,4 +1,4 @@
-package fr.nuggetreckt.omegabot.buttons;
+package fr.nuggetreckt.omegabot.button;
 
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 
