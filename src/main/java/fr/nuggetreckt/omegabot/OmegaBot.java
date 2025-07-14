@@ -45,6 +45,8 @@ public class OmegaBot {
         } catch (NullPointerException e) {
             throw new RuntimeException(e);
         }
+        if (token == null || token.isEmpty())
+            throw new RuntimeException("Token is null or empty");
 
         //Loading modules
         statsHandler = new StatsHandler(this);
