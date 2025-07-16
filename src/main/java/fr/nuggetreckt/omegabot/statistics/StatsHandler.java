@@ -11,6 +11,8 @@ import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import java.io.*;
 import java.time.LocalTime;
@@ -20,33 +22,55 @@ import java.util.List;
 public class StatsHandler {
 
     private final OmegaBot instance;
-    private final HashMap<String, MemberStats> stats;
+    private HashMap<String, MemberStats> stats;
+
+    private int activeMembers;
+    private long currentNum;
 
     private File jsonFile;
 
     public StatsHandler(OmegaBot instance) {
         this.instance = instance;
-        this.stats = new HashMap<>();
+        this.activeMembers = 0;
+        this.currentNum = 0;
     }
 
     public void init() {
         List<Member> members = instance.getConfig().getGuild().loadMembers().get();
         jsonFile = new File("stats.json");
 
-        for (Member member : members) {
-            if (member.getUser().isBot()) continue;
-
-            initMemberStats(member.getId());
-        }
         if (!jsonFile.exists()) {
-            instance.getLogger().info("No stats file found, creating JSON file...");
+            instance.getLogger().info("No stats file found, reading data...");
+            initStats();
+            instance.getLogger().info("Stats loaded. Saving into file...");
             initJSON(members);
-            instance.getLogger().info("JSON file created. Setting up data...");
-            setJsonData();
+            return;
         }
         instance.getLogger().info("Loading stats data...");
+        stats = new HashMap<>();
+        JSONObject obj = null;
 
-        //TODO: Read JSON file and set member stats
+        try {
+            obj = (JSONObject) new JSONParser().parse(new FileReader(jsonFile));
+        } catch (IOException e) {
+            instance.getLogger().error("Failed to load file: " + jsonFile.getAbsolutePath());
+        } catch (ParseException e) {
+            instance.getLogger().error("Failed to parse file: " + jsonFile.getAbsolutePath());
+        }
+        if (obj == null) return;
+
+        JSONArray memberList = (JSONArray) obj.get("members");
+        activeMembers = Integer.parseInt(obj.get("activeMembers").toString());
+        currentNum = Long.parseLong(obj.get("currentNum").toString());
+
+        memberList.forEach(m -> {
+            JSONObject member = (JSONObject) m;
+
+            String memberId = (String) member.get("id");
+            JSONObject stats = (JSONObject) member.get("stats");
+
+            //TODO: set stats data
+        });
     }
 
     public MemberStats getMemberStats(String id) {
@@ -63,8 +87,8 @@ public class StatsHandler {
         JSONObject obj = new JSONObject();
 
         obj.put("lastUpdated", LocalTime.now().toString());
-        obj.put("currentNum", 0);
-        obj.put("activeMembers", 0);
+        obj.put("currentNum", currentNum);
+        obj.put("activeMembers", activeMembers);
 
         for (Member member : members) {
             if (member.getUser().isBot()) continue;
@@ -74,12 +98,23 @@ public class StatsHandler {
 
             memberObj.put("id", member.getId());
             memberObj.put("name", member.getEffectiveName());
-            memberObj.put("joinDate", member.getTimeJoined().toString());
 
-            statsObj.put("counted", 0);
-            statsObj.put("magicNumberCount", 0);
-            statsObj.put("hundredsCount", 0);
-            statsObj.put("thousandsCount", 0);
+            long counted = 0;
+            long magicNumberCount = 0;
+            long hundredsCount = 0;
+            long thousandsCount = 0;
+
+            if (stats.containsKey(member.getId()) || stats.get(member.getId()) != null) {
+                MemberStats memberStats = getMemberStats(member.getId());
+                counted = memberStats.counted;
+                magicNumberCount = memberStats.magicNumberCount;
+                hundredsCount = memberStats.hundredsCount;
+                thousandsCount = memberStats.thousandsCount;
+            }
+            statsObj.put("counted", counted);
+            statsObj.put("magicNumberCount", magicNumberCount);
+            statsObj.put("hundredsCount", hundredsCount);
+            statsObj.put("thousandsCount", thousandsCount);
 
             memberObj.put("stats", statsObj);
             memberArray.add(memberObj);
@@ -97,11 +132,11 @@ public class StatsHandler {
         }
     }
 
-    private void setJsonData() {
+    private void initStats() {
+        stats = new HashMap<>();
         MessageChannel channel = instance.getConfig().getCountChannel();
         MessageHistory history = MessageHistory.getHistoryFromBeginning(channel).complete();
         List<Message> messages = history.getRetrievedHistory().reversed();
-        HashMap<String, MemberStats> tmp = new HashMap<>();
         Message lasMessage = messages.get(history.getRetrievedHistory().size() - 1);
         long expectedCount = ParseUtil.parseMessage(lasMessage.getContentRaw());
         long counted = 0;
@@ -111,18 +146,14 @@ public class StatsHandler {
             if (!ParseUtil.isMessageValid(message.getContentRaw())) continue;
 
             String userId = message.getAuthor().getId();
-
-            System.out.println("DEBUG: msg=" + message.getContentRaw());
-            System.out.println("DEBUG: member=" + userId);
-
-            if (!tmp.containsKey(userId) || tmp.get(userId) == null) {
-                tmp.get(userId);
-            } else {
-                tmp.put(userId, new MemberStats());
+            if (!stats.containsKey(userId) || stats.get(userId) == null) {
+                initMemberStats(userId);
             }
+            MemberStats ms = stats.get(userId);
+            ms.counted++;
             counted++;
         }
-        System.out.println("DEBUG: counted=" + counted);
-        System.out.println("DEBUG: lastMessage=" + expectedCount);
+        currentNum = counted;
+        activeMembers = stats.size();
     }
 }
