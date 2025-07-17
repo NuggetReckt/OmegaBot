@@ -20,4 +20,13 @@ public class MemberStats {
         this.hundredsCount = 0;
         this.thousandsCount = 0;
     }
+
+    public long getScore() {
+        long score = counted;
+
+        score += magicNumberCount * 4;
+        score += hundredsCount * 2;
+        score += thousandsCount * 3;
+        return score;
+    }
 }

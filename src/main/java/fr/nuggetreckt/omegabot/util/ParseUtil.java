@@ -15,8 +15,12 @@ public class ParseUtil {
         return true;
     }
 
+    public static String splitMessage(@NotNull String message) {
+        return message.split(" ")[0];
+    }
+
     public static Long parseMessage(@NotNull String message) {
-        String content = message.split(" ")[0];
+        String content = splitMessage(message);
 
         if (!isMessageValid(content)) return -1L;
         return Long.parseLong(content);
