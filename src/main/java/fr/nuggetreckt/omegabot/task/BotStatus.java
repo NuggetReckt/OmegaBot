@@ -7,8 +7,7 @@ import java.util.*;
 
 public class BotStatus {
 
-    private final static int CHANGE_STATUS_INTERVAL = 24000;
-    private final static int SECOND = 1000;
+    private final static long CHANGE_STATUS_INTERVAL = 24000;
 
     public static void setStatus(OmegaBot instance) {
         List<String> status = new ArrayList<>();
@@ -28,6 +27,6 @@ public class BotStatus {
                 int a = r.nextInt(status.size() - 1);
                 instance.getJDA().getPresence().setActivity(Activity.playing(String.valueOf(status.get(a))));
             }
-        }, SECOND, CHANGE_STATUS_INTERVAL);
+        }, 0, CHANGE_STATUS_INTERVAL);
     }
 }
