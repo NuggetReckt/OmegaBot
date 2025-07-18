@@ -25,6 +25,8 @@ public class CommandManager extends ListenerAdapter {
 
         commandData.add(Commands.slash("leaderboard", "Permet de visualiser le leaderboard."));
 
+        commandData.add(Commands.slash("shutdown", "Shutdown le bot."));
+
         event.getGuild().updateCommands().addCommands(commandData).queue();
     }
 }

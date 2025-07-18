@@ -6,7 +6,9 @@ import fr.nuggetreckt.omegabot.command.CommandManager;
 import fr.nuggetreckt.omegabot.listener.MemberJoinListener;
 import fr.nuggetreckt.omegabot.listener.MemberMessageListener;
 import fr.nuggetreckt.omegabot.listener.ReadyListener;
+import fr.nuggetreckt.omegabot.listener.ShutdownListener;
 import fr.nuggetreckt.omegabot.statistics.StatsHandler;
+import fr.nuggetreckt.omegabot.task.TasksHandler;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -26,6 +28,7 @@ public class OmegaBot {
     private final Logger logger;
 
     private final StatsHandler statsHandler;
+    private final TasksHandler tasksHandler;
 
     public OmegaBot() throws RuntimeException {
         instance = this;
@@ -50,6 +53,7 @@ public class OmegaBot {
 
         //Loading modules
         statsHandler = new StatsHandler(this);
+        tasksHandler = new TasksHandler(this);
 
         getLogger().info("Token OK. Launching JDA...");
 
@@ -71,6 +75,7 @@ public class OmegaBot {
         jda.addEventListener(new ReadyListener(instance));
         jda.addEventListener(new MemberJoinListener(instance));
         jda.addEventListener(new MemberMessageListener(instance));
+        jda.addEventListener(new ShutdownListener(instance));
 
         //Register Commands
         jda.addEventListener(new CommandManager());
@@ -98,6 +103,10 @@ public class OmegaBot {
 
     public StatsHandler getStatsHandler() {
         return statsHandler;
+    }
+
+    public TasksHandler getTasksHandler() {
+        return tasksHandler;
     }
 
     public String getVersion() {

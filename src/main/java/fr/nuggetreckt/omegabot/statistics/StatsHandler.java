@@ -192,4 +192,8 @@ public class StatsHandler {
         });
         return members;
     }
+
+    public final File getFile() {
+        return jsonFile;
+    }
 }

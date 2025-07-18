@@ -2,6 +2,7 @@ package fr.nuggetreckt.omegabot.command;
 
 import fr.nuggetreckt.omegabot.OmegaBot;
 import fr.nuggetreckt.omegabot.command.impl.LeaderBoardCommand;
+import fr.nuggetreckt.omegabot.command.impl.ShutdownCommand;
 import fr.nuggetreckt.omegabot.command.impl.StatsCommand;
 import fr.nuggetreckt.omegabot.command.impl.SuggestionCommand;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
@@ -27,6 +28,7 @@ public class CommandListener extends ListenerAdapter {
         registerCommand("suggestion", new SuggestionCommand(instance));
         registerCommand("stats", new StatsCommand(instance));
         registerCommand("leaderboard", new LeaderBoardCommand(instance));
+        registerCommand("shutdown", new ShutdownCommand(instance));
     }
 
     private void registerCommand(String name, Command command) {

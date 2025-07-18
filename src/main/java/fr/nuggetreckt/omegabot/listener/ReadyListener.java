@@ -1,9 +1,7 @@
 package fr.nuggetreckt.omegabot.listener;
 
 import fr.nuggetreckt.omegabot.OmegaBot;
-import fr.nuggetreckt.omegabot.task.BotStatus;
 import fr.nuggetreckt.omegabot.task.EmbedsSender;
-import fr.nuggetreckt.omegabot.task.StatsSaver;
 import net.dv8tion.jda.api.events.GenericEvent;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
@@ -39,9 +37,11 @@ public class ReadyListener implements EventListener {
             });
             initTask.start();
 
+            instance.getLogger().info("Starting tasks...");
+            instance.getTasksHandler().runTasks();
+            instance.getLogger().info("Tasks started.");
+
             EmbedsSender.sendEmbeds(instance);
-            BotStatus.setStatus(instance);
-            StatsSaver.launch(instance);
         }
     }
 }
