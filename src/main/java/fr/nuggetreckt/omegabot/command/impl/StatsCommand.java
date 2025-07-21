@@ -40,7 +40,7 @@ public class StatsCommand extends Command {
     @NotNull
     private MessageEmbed getStatsEmbed(@NotNull Member member) {
         StatsHandler statsHandler = instance.getStatsHandler();
-        MemberStats memberStats = statsHandler.getMemberStats(member.getId());
+        MemberStats memberStats = statsHandler.getMembersStats(member.getId());
         EmbedBuilder stats = new EmbedBuilder();
 
         stats.setTitle("\uD83D\uDCCA ・ Stats (" + member.getEffectiveName() + ")")

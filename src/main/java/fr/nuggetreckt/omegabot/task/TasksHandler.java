@@ -2,6 +2,7 @@ package fr.nuggetreckt.omegabot.task;
 
 import fr.nuggetreckt.omegabot.OmegaBot;
 import fr.nuggetreckt.omegabot.task.impl.ChangeStatusTask;
+import fr.nuggetreckt.omegabot.task.impl.SendEmbedsTask;
 import fr.nuggetreckt.omegabot.task.impl.StatsSaveTask;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class TasksHandler {
     private void setupTasks() {
         setupTask(new ChangeStatusTask(instance));
         setupTask(new StatsSaveTask(instance));
-        //setupTask(new TestTask(instance)); FOR TESTING ONLY
+        setupTask(new SendEmbedsTask(instance));
     }
 
     public void runTasks() {
@@ -33,6 +34,28 @@ public class TasksHandler {
 
     public void stopTasks() {
         for (Task task : tasks) {
+            if (task.isRunning()) {
+                while (true) {
+                    long startTime = System.currentTimeMillis();
+
+                    instance.getLogger().info("Waiting for task to finish.");
+                    if (!task.isRunning()) {
+                        task.stop();
+                        break;
+                    }
+
+                    long elapsed = System.currentTimeMillis() - startTime;
+                    long sleepTime = 1000 - elapsed;
+                    if (sleepTime > 0) {
+                        try {
+                            Thread.sleep(sleepTime);
+                        } catch (InterruptedException e) {
+                            break;
+                        }
+                    }
+                }
+                continue;
+            }
             task.stop();
         }
     }

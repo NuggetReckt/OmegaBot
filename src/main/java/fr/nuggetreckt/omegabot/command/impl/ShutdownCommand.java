@@ -2,6 +2,7 @@ package fr.nuggetreckt.omegabot.command.impl;
 
 import fr.nuggetreckt.omegabot.OmegaBot;
 import fr.nuggetreckt.omegabot.command.Command;
+import fr.nuggetreckt.omegabot.util.SaveUtil;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
@@ -28,6 +29,6 @@ public class ShutdownCommand extends Command {
         event.reply("> Extinction du bot.").setEphemeral(true)
                 .queue();
 
-        instance.getJDA().shutdown();
+        SaveUtil.saveAndExit(instance);
     }
 }

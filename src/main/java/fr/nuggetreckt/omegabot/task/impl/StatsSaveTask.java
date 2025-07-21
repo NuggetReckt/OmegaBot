@@ -2,6 +2,10 @@ package fr.nuggetreckt.omegabot.task.impl;
 
 import fr.nuggetreckt.omegabot.OmegaBot;
 import fr.nuggetreckt.omegabot.task.Task;
+import fr.nuggetreckt.omegabot.util.SaveUtil;
+import net.dv8tion.jda.api.entities.Member;
+
+import java.util.List;
 
 public class StatsSaveTask extends Task {
 
@@ -15,14 +19,10 @@ public class StatsSaveTask extends Task {
 
     @Override
     protected void execute() {
-        instance.getLogger().info("[AUTOSAVE] Saving stats...");
-        save();
-    }
+        List<Member> members = instance.getConfig().getGuild().loadMembers().get();
 
-    private void save() {
-        Thread thread = new Thread(() -> {
-            //TODO: Save stats data into JSON file
-        });
-        thread.start();
+        instance.getLogger().info("[AUTOSAVE] Saving stats...");
+        SaveUtil.saveFile(members, instance);
+        instance.getLogger().info("[AUTOSAVE] Stats saved.");
     }
 }

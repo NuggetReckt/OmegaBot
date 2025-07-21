@@ -24,7 +24,7 @@ public class MemberMessageListener extends ListenerAdapter {
 
         Message message = event.getMessage();
         String content = ParseUtil.splitMessage(message.getContentRaw());
-        MemberStats memberStats = instance.getStatsHandler().getMemberStats(event.getAuthor().getId());
+        MemberStats memberStats = instance.getStatsHandler().getMembersStats(event.getAuthor().getId());
         long count;
 
         if (!ParseUtil.isMessageValid(content)) {

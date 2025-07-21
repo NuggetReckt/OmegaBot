@@ -9,12 +9,14 @@ import fr.nuggetreckt.omegabot.listener.ReadyListener;
 import fr.nuggetreckt.omegabot.listener.ShutdownListener;
 import fr.nuggetreckt.omegabot.statistics.StatsHandler;
 import fr.nuggetreckt.omegabot.task.TasksHandler;
+import fr.nuggetreckt.omegabot.util.SaveUtil;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.misc.Signal;
 
 public class OmegaBot {
 
@@ -56,6 +58,8 @@ public class OmegaBot {
         tasksHandler = new TasksHandler(this);
 
         getLogger().info("Token OK. Launching JDA...");
+
+        Signal.handle(new Signal("INT"), signal -> SaveUtil.saveAndExit(this));
 
         build();
     }

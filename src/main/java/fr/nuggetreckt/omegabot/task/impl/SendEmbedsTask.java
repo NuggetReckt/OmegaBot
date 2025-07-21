@@ -1,33 +1,38 @@
-package fr.nuggetreckt.omegabot.task;
+package fr.nuggetreckt.omegabot.task.impl;
 
 import fr.nuggetreckt.omegabot.OmegaBot;
+import fr.nuggetreckt.omegabot.task.Task;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.Date;
 
-public class EmbedsSender {
+public class SendEmbedsTask extends Task {
 
-    public static void sendEmbeds(@NotNull OmegaBot instance) {
+    private final OmegaBot instance;
+
+    public SendEmbedsTask(OmegaBot instance) {
+        super(10);
+
+        this.instance = instance;
+    }
+
+    @Override
+    public void execute() {
         MessageChannel takeRoleChannel = instance.getConfig().getTakeRoleChannel();
         MessageChannel verifyChannel = instance.getConfig().getVerifyChannel();
         MessageChannel rulesChannel = instance.getConfig().getRulesChannel();
 
-        try {
-            takeRoleEmbedSender(takeRoleChannel);
-            verifyEmbedSender(verifyChannel);
-            rulesEmbedSender(rulesChannel);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        takeRoleEmbedSender(takeRoleChannel);
+        verifyEmbedSender(verifyChannel);
+        rulesEmbedSender(rulesChannel);
     }
 
-    private static void takeRoleEmbedSender(MessageChannel takeRoleChannel) {
+    private void takeRoleEmbedSender(MessageChannel takeRoleChannel) {
         MessageHistory history = MessageHistory.getHistoryFromBeginning(takeRoleChannel).complete();
         int messages = history.getRetrievedHistory().size();
 
@@ -65,7 +70,7 @@ public class EmbedsSender {
                 .queue();
     }
 
-    private static void verifyEmbedSender(MessageChannel verifyChannel) {
+    private void verifyEmbedSender(MessageChannel verifyChannel) {
         MessageHistory history = MessageHistory.getHistoryFromBeginning(verifyChannel).complete();
         int messages = history.getRetrievedHistory().size();
 
@@ -87,7 +92,7 @@ public class EmbedsSender {
                 .queue();
     }
 
-    private static void rulesEmbedSender(MessageChannel rulesChannel) {
+    private void rulesEmbedSender(MessageChannel rulesChannel) {
         MessageHistory history = MessageHistory.getHistoryFromBeginning(rulesChannel).complete();
         int messages = history.getRetrievedHistory().size();
 

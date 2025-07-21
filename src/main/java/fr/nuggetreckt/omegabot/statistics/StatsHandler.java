@@ -16,7 +16,6 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,8 +23,8 @@ import java.util.List;
 public class StatsHandler {
 
     private final OmegaBot instance;
-    private HashMap<String, MemberStats> stats;
 
+    private HashMap<String, MemberStats> membersStats;
     private long currentNum;
 
     private File jsonFile;
@@ -47,7 +46,7 @@ public class StatsHandler {
             return;
         }
         instance.getLogger().info("Stats file found. Loading data...");
-        stats = new HashMap<>();
+        membersStats = new HashMap<>();
         JSONObject obj = null;
 
         try {
@@ -72,9 +71,9 @@ public class StatsHandler {
             long hundredsCount = Long.parseLong(statsObj.get("hundredsCount").toString());
             long thousandsCount = Long.parseLong(statsObj.get("thousandsCount").toString());
 
-            if (!stats.containsKey(memberId) || stats.get(memberId) == null)
+            if (!membersStats.containsKey(memberId) || membersStats.get(memberId) == null)
                 initMemberStats(memberId);
-            MemberStats memberStats = stats.get(memberId);
+            MemberStats memberStats = this.membersStats.get(memberId);
             memberStats.counted = counted;
             memberStats.magicNumberCount = magicNumberCount;
             memberStats.hundredsCount = hundredsCount;
@@ -82,57 +81,22 @@ public class StatsHandler {
         });
     }
 
-    public MemberStats getMemberStats(String id) {
-        if (!stats.containsKey(id) || stats.get(id) == null) throw new MemberNotFoundException();
-        return stats.get(id);
+    public MemberStats getMembersStats(String id) {
+        if (!membersStats.containsKey(id) || membersStats.get(id) == null) throw new MemberNotFoundException();
+        return membersStats.get(id);
     }
 
     private void initMemberStats(String id) {
-        stats.put(id, new MemberStats());
+        membersStats.put(id, new MemberStats());
     }
 
     private void initJSON(@NotNull List<Member> members) {
-        JSONArray memberArray = new JSONArray();
-        JSONObject obj = new JSONObject();
-
-        obj.put("lastUpdated", LocalTime.now().toString());
-        obj.put("currentNum", currentNum);
-        obj.put("activeMembers", getActiveMembers().size());
-
-        for (Member member : members) {
-            if (member.getUser().isBot()) continue;
-
-            JSONObject memberObj = new JSONObject();
-            JSONObject statsObj = new JSONObject();
-
-            memberObj.put("id", member.getId());
-            memberObj.put("name", member.getEffectiveName());
-
-            long counted = 0;
-            long magicNumberCount = 0;
-            long hundredsCount = 0;
-            long thousandsCount = 0;
-
-            if (stats.containsKey(member.getId()) || stats.get(member.getId()) != null) {
-                MemberStats memberStats = getMemberStats(member.getId());
-                counted = memberStats.counted;
-                magicNumberCount = memberStats.magicNumberCount;
-                hundredsCount = memberStats.hundredsCount;
-                thousandsCount = memberStats.thousandsCount;
-            }
-            statsObj.put("counted", counted);
-            statsObj.put("magicNumberCount", magicNumberCount);
-            statsObj.put("hundredsCount", hundredsCount);
-            statsObj.put("thousandsCount", thousandsCount);
-
-            memberObj.put("stats", statsObj);
-            memberArray.add(memberObj);
-        }
-        obj.put("members", memberArray);
+        JSONObject obj = JsonUtil.createJson(members, this);
 
         //Write JSON object to file
         try {
-            jsonFile.createNewFile();
+            if (!jsonFile.createNewFile())
+                throw new IOException("Failed to create new file");
             JsonUtil.writeJSON(obj, jsonFile);
         } catch (RuntimeException e) {
             instance.getLogger().error("Failed to write JSON object", e);
@@ -142,7 +106,7 @@ public class StatsHandler {
     }
 
     private void initStats() {
-        stats = new HashMap<>();
+        membersStats = new HashMap<>();
         MessageChannel channel = instance.getConfig().getCountChannel();
         MessageHistory history = MessageHistory.getHistoryFromBeginning(channel).complete();
         List<Message> messages = history.getRetrievedHistory().reversed();
@@ -155,10 +119,10 @@ public class StatsHandler {
             if (!ParseUtil.isMessageValid(message.getContentRaw())) continue;
 
             String userId = message.getAuthor().getId();
-            if (!stats.containsKey(userId) || stats.get(userId) == null) {
+            if (!membersStats.containsKey(userId) || membersStats.get(userId) == null) {
                 initMemberStats(userId);
             }
-            MemberStats ms = stats.get(userId);
+            MemberStats ms = membersStats.get(userId);
             String content = ParseUtil.splitMessage(message.getContentRaw());
 
             if (content.endsWith("69")) {
@@ -186,11 +150,15 @@ public class StatsHandler {
         List<Member> members = new ArrayList<>();
         Guild currentGuild = instance.getConfig().getGuild();
 
-        stats.forEach((id, stats) -> {
+        membersStats.forEach((id, stats) -> {
             if (stats.counted > 0)
                 members.add(currentGuild.getMemberById(id));
         });
         return members;
+    }
+
+    public HashMap<String, MemberStats> getMembersStats() {
+        return membersStats;
     }
 
     public final File getFile() {

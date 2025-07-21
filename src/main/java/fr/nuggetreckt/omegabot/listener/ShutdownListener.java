@@ -16,7 +16,6 @@ public class ShutdownListener extends ListenerAdapter {
     @Override
     public void onShutdown(@NotNull ShutdownEvent event) {
         instance.getLogger().info("Shutting down...");
-        //TODO: save data
         instance.getLogger().info("Stopping tasks...");
         instance.getTasksHandler().stopTasks();
         instance.getLogger().info("Tasks stopped.");
