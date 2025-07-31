@@ -85,6 +85,7 @@ public class OmegaBot {
         //Simple Events
         jda.addEventListener(new ReadyListener(instance));
         jda.addEventListener(new MemberJoinListener(instance));
+        jda.addEventListener(new MemberLeaveListener(instance));
         jda.addEventListener(new MemberMessageListener(instance));
         jda.addEventListener(new ShutdownListener(instance));
 

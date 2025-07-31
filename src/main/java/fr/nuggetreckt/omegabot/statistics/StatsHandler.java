@@ -81,13 +81,13 @@ public class StatsHandler {
         });
     }
 
-    public MemberStats getMemberStats(String id) {
+    public MemberStats getMemberStats(String id) throws MemberNotFoundException {
         if (!membersStats.containsKey(id) || membersStats.get(id) == null) throw new MemberNotFoundException();
         return membersStats.get(id);
     }
 
-    private void initMemberStats(String id) {
-        membersStats.put(id, new MemberStats());
+    public void initMemberStats(String id) {
+        membersStats.putIfAbsent(id, new MemberStats());
     }
 
     private void initJSON(@NotNull List<Member> members) {

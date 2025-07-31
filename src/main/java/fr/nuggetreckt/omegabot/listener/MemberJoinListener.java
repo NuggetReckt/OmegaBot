@@ -1,6 +1,7 @@
 package fr.nuggetreckt.omegabot.listener;
 
 import fr.nuggetreckt.omegabot.OmegaBot;
+import fr.nuggetreckt.omegabot.exception.MemberNotFoundException;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
@@ -34,5 +35,13 @@ public class MemberJoinListener extends ListenerAdapter {
         //Send embed message
         instance.getConfig().getJoinChannel().sendMessageEmbeds(join.build())
                 .queue();
+
+        try {
+            instance.getStatsHandler().getMemberStats(event.getMember().getId());
+        } catch (MemberNotFoundException e) {
+            instance.getStatsHandler().initMemberStats(member.getId());
+        }
+        if (!instance.getMembers().contains(event.getMember()))
+            instance.getMembers().add(member);
     }
 }
