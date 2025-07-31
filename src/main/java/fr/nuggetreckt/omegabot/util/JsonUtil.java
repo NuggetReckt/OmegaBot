@@ -42,7 +42,7 @@ public class JsonUtil {
             long thousandsCount = 0;
 
             if (stats.containsKey(member.getId()) || stats.get(member.getId()) != null) {
-                MemberStats memberStats = statsHandler.getMembersStats(member.getId());
+                MemberStats memberStats = statsHandler.getMemberStats(member.getId());
                 counted = memberStats.counted;
                 magicNumberCount = memberStats.magicNumberCount;
                 hundredsCount = memberStats.hundredsCount;

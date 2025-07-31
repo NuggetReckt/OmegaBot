@@ -12,7 +12,7 @@ public class Config {
         this.instance = instance;
     }
 
-    private boolean dev = true;
+    private final boolean dev = true;
 
     //Guilds ids
     public String devGuildId = "986026862406950993";

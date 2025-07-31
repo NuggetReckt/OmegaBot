@@ -40,16 +40,16 @@ public class StatsCommand extends Command {
     @NotNull
     private MessageEmbed getStatsEmbed(@NotNull Member member) {
         StatsHandler statsHandler = instance.getStatsHandler();
-        MemberStats memberStats = statsHandler.getMembersStats(member.getId());
+        MemberStats memberStats = statsHandler.getMemberStats(member.getId());
         EmbedBuilder stats = new EmbedBuilder();
 
         stats.setTitle("\uD83D\uDCCA ・ Stats (" + member.getEffectiveName() + ")")
                 .setThumbnail(member.getEffectiveAvatarUrl())
-                .addField("\uD83C\uDF10 __générales__ :", String.format("""
+                .addField("\uD83C\uDF10 __Générales__ :", String.format("""
                         ・Participants : `%d`
                         ・Nombre actuel : `%d`
                         """, statsHandler.getActiveMembers().size(), statsHandler.getCurrentNum()), false)
-                .addField("\uD83D\uDC64 __personnelles__ :", String.format("""
+                .addField("\uD83D\uDC64 __Personnelles__ :", String.format("""
                         ・Score : `%d`
                         ・Nombres comptés : `%d`
                         ・Nombres magiques : `%d`

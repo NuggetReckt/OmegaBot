@@ -81,7 +81,7 @@ public class StatsHandler {
         });
     }
 
-    public MemberStats getMembersStats(String id) {
+    public MemberStats getMemberStats(String id) {
         if (!membersStats.containsKey(id) || membersStats.get(id) == null) throw new MemberNotFoundException();
         return membersStats.get(id);
     }

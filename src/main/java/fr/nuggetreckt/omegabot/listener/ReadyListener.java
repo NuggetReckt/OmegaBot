@@ -29,12 +29,14 @@ public class ReadyListener implements EventListener {
                                             __/ |
                                            |___/""");
 
-            Thread initTask = new Thread(() -> {
+            new Thread(instance::loadMembers).start();
+            new Thread(() -> {
                 instance.getLogger().info("Member stats initialization...");
                 instance.getStatsHandler().init();
-                instance.getLogger().info("Member stats initialized successfully.");
-            });
-            initTask.start();
+                instance.getLogger().info("Member stats initialized successfully. Setting up leaderboards...");
+                instance.getLeaderboardHandler().init();
+                instance.getLogger().info("Leaderboards set up.");
+            }).start();
 
             instance.getLogger().info("Starting tasks...");
             instance.getTasksHandler().runTasks();

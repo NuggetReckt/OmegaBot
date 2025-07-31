@@ -3,20 +3,22 @@ package fr.nuggetreckt.omegabot;
 import fr.nuggetreckt.omegabot.button.ButtonListener;
 import fr.nuggetreckt.omegabot.command.CommandListener;
 import fr.nuggetreckt.omegabot.command.CommandManager;
-import fr.nuggetreckt.omegabot.listener.MemberJoinListener;
-import fr.nuggetreckt.omegabot.listener.MemberMessageListener;
-import fr.nuggetreckt.omegabot.listener.ReadyListener;
-import fr.nuggetreckt.omegabot.listener.ShutdownListener;
+import fr.nuggetreckt.omegabot.listener.*;
 import fr.nuggetreckt.omegabot.statistics.StatsHandler;
+import fr.nuggetreckt.omegabot.statistics.leaderboard.LeaderboardHandler;
 import fr.nuggetreckt.omegabot.task.TasksHandler;
 import fr.nuggetreckt.omegabot.util.SaveUtil;
 import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sun.misc.Signal;
+
+import java.util.List;
 
 public class OmegaBot {
 
@@ -31,6 +33,9 @@ public class OmegaBot {
 
     private final StatsHandler statsHandler;
     private final TasksHandler tasksHandler;
+    private final LeaderboardHandler leaderboardHandler;
+
+    private List<Member> members;
 
     public OmegaBot() throws RuntimeException {
         instance = this;
@@ -56,6 +61,7 @@ public class OmegaBot {
         //Loading modules
         statsHandler = new StatsHandler(this);
         tasksHandler = new TasksHandler(this);
+        leaderboardHandler = new LeaderboardHandler(this);
 
         getLogger().info("Token OK. Launching JDA...");
 
@@ -68,6 +74,7 @@ public class OmegaBot {
         jda = JDABuilder.createDefault(token)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .enableIntents(GatewayIntent.GUILD_MESSAGES)
+                .enableIntents(GatewayIntent.GUILD_PRESENCES)
                 .enableIntents(GatewayIntent.MESSAGE_CONTENT)
                 .build();
 
@@ -84,9 +91,27 @@ public class OmegaBot {
         //Register Commands
         jda.addEventListener(new CommandManager());
 
-        //Commands/Buttons Events
+        //Interactions Events
         jda.addEventListener(new CommandListener(this));
         jda.addEventListener(new ButtonListener(this));
+        jda.addEventListener(new StringSelectListener(this));
+    }
+
+    @Nullable
+    public Member getMemberById(String id) {
+        for (Member m : members) {
+            if (m.getId().equals(id))
+                return m;
+        }
+        return null;
+    }
+
+    public void loadMembers() {
+        members = config.getGuild().loadMembers().get();
+    }
+
+    public List<Member> getMembers() {
+        return members;
     }
 
     public OmegaBot getInstance() {
@@ -111,6 +136,10 @@ public class OmegaBot {
 
     public TasksHandler getTasksHandler() {
         return tasksHandler;
+    }
+
+    public LeaderboardHandler getLeaderboardHandler() {
+        return leaderboardHandler;
     }
 
     public String getVersion() {

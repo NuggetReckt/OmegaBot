@@ -2,6 +2,7 @@ package fr.nuggetreckt.omegabot.task;
 
 import fr.nuggetreckt.omegabot.OmegaBot;
 import fr.nuggetreckt.omegabot.task.impl.ChangeStatusTask;
+import fr.nuggetreckt.omegabot.task.impl.LeaderboardUpdateTask;
 import fr.nuggetreckt.omegabot.task.impl.SendEmbedsTask;
 import fr.nuggetreckt.omegabot.task.impl.StatsSaveTask;
 
@@ -24,6 +25,7 @@ public class TasksHandler {
         setupTask(new ChangeStatusTask(instance));
         setupTask(new StatsSaveTask(instance));
         setupTask(new SendEmbedsTask(instance));
+        setupTask(new LeaderboardUpdateTask(instance));
     }
 
     public void runTasks() {
