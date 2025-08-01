@@ -23,7 +23,6 @@ import java.util.List;
 public class OmegaBot {
 
     private JDA jda;
-    private final Dotenv dotenv;
 
     private final String token;
     private final OmegaBot instance;
@@ -45,7 +44,7 @@ public class OmegaBot {
         getLogger().info("Reading token...");
 
         //Loading token
-        dotenv = Dotenv.configure()
+        Dotenv dotenv = Dotenv.configure()
                 .directory("/env/")
                 .filename(".env")
                 .load();

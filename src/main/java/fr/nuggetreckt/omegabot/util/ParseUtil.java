@@ -19,7 +19,7 @@ public class ParseUtil {
         return message.split(" ")[0];
     }
 
-    public static Long parseMessage(@NotNull String message) {
+    public static long parseMessage(@NotNull String message) {
         String content = splitMessage(message);
 
         if (!isMessageValid(content)) return -1L;

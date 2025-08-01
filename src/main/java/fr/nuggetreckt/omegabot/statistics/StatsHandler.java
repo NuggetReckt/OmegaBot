@@ -2,6 +2,7 @@ package fr.nuggetreckt.omegabot.statistics;
 
 import fr.nuggetreckt.omegabot.OmegaBot;
 import fr.nuggetreckt.omegabot.exception.MemberNotFoundException;
+import fr.nuggetreckt.omegabot.util.Bar;
 import fr.nuggetreckt.omegabot.util.JsonUtil;
 import fr.nuggetreckt.omegabot.util.ParseUtil;
 import net.dv8tion.jda.api.entities.Guild;
@@ -42,7 +43,7 @@ public class StatsHandler {
             instance.getLogger().info("No stats file found, reading data...");
             initStats();
             instance.getLogger().info("Stats loaded. Saving into file...");
-            initJSON(members);
+            initJSON(members); //TODO: use SaveUtil instead of initJSON() method
             return;
         }
         instance.getLogger().info("Stats file found. Loading data...");
@@ -79,6 +80,15 @@ public class StatsHandler {
             memberStats.hundredsCount = hundredsCount;
             memberStats.thousandsCount = thousandsCount;
         });
+
+        MessageChannel channel = instance.getConfig().getCountChannel();
+        Message lasMessage = channel.retrieveMessageById(channel.getLatestMessageId()).complete();
+        long expectedCount = ParseUtil.parseMessage(lasMessage.getContentRaw());
+
+        if (currentNum != expectedCount) { //TODO: A TESTER
+            instance.getLogger().warn("Current number was " + currentNum + ", but expected " + expectedCount + ". Set current number to expected value.");
+            currentNum = expectedCount;
+        }
     }
 
     public MemberStats getMemberStats(String id) throws MemberNotFoundException {
@@ -113,15 +123,30 @@ public class StatsHandler {
         Message lasMessage = messages.get(history.getRetrievedHistory().size() - 1);
         long expectedCount = ParseUtil.parseMessage(lasMessage.getContentRaw());
         long counted = 0;
+        Bar progressBar = new Bar(50, messages.size());
+        int i = 0;
+        int j = 1;
 
         for (Message message : messages) {
+            progressBar.update(j);
+            progressBar.display();
+            j++;
+
             if (message.getAuthor().isBot()) continue;
             if (!ParseUtil.isMessageValid(message.getContentRaw())) continue;
 
-            String userId = message.getAuthor().getId();
-            if (!membersStats.containsKey(userId) || membersStats.get(userId) == null) {
-                initMemberStats(userId);
+            if (i > 0) { //TODO: A TESTER
+                long beforeNb = ParseUtil.parseMessage(messages.get(i - 1).getContentRaw());
+                long currentNb = ParseUtil.parseMessage(message.getContentRaw());
+
+                if (beforeNb != currentNb - 1) continue;
             }
+
+            String userId = message.getAuthor().getId();
+
+            if (!membersStats.containsKey(userId) || membersStats.get(userId) == null)
+                initMemberStats(userId);
+
             MemberStats ms = membersStats.get(userId);
             String content = ParseUtil.splitMessage(message.getContentRaw());
 
@@ -134,8 +159,14 @@ public class StatsHandler {
             }
             ms.counted++;
             counted++;
+            i++;
         }
+        System.out.println();
         currentNum = counted;
+        if (currentNum != expectedCount) { //TODO: A TESTER
+            instance.getLogger().warn("Current number was " + currentNum + ", but expected " + expectedCount + ". Set current number to expected value.");
+            currentNum = expectedCount;
+        }
     }
 
     public long getCurrentNum() {
