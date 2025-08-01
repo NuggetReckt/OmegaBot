@@ -35,6 +35,7 @@ public class OmegaBot {
     private final LeaderboardHandler leaderboardHandler;
 
     private List<Member> members;
+    private boolean isShuttingDown;
 
     public OmegaBot() throws RuntimeException {
         instance = this;
@@ -64,7 +65,15 @@ public class OmegaBot {
 
         getLogger().info("Token OK. Launching JDA...");
 
-        Signal.handle(new Signal("INT"), signal -> SaveUtil.saveAndExit(this));
+        Signal.handle(new Signal("INT"), signal -> {
+            if (isShuttingDown) {
+                logger.info("Detected SIGINT twice, Forcing shutting down.");
+                System.exit(1);
+                return;
+            }
+            isShuttingDown = true;
+            SaveUtil.saveAndExit(this);
+        });
 
         build();
     }
