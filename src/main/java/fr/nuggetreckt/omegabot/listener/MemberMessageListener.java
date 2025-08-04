@@ -2,6 +2,7 @@ package fr.nuggetreckt.omegabot.listener;
 
 import fr.nuggetreckt.omegabot.OmegaBot;
 import fr.nuggetreckt.omegabot.statistics.MemberStats;
+import fr.nuggetreckt.omegabot.statistics.StatsHandler;
 import fr.nuggetreckt.omegabot.util.ParseUtil;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
@@ -22,9 +23,10 @@ public class MemberMessageListener extends ListenerAdapter {
         if (event.getAuthor().isBot()) return;
         if (!event.getChannel().getId().equals(instance.getConfig().getCountChannel().getId())) return;
 
+        StatsHandler statsHandler = instance.getStatsHandler();
         Message message = event.getMessage();
         String content = ParseUtil.splitMessage(message.getContentRaw());
-        MemberStats memberStats = instance.getStatsHandler().getMemberStats(event.getAuthor().getId());
+        MemberStats memberStats = statsHandler.getMemberStats(event.getAuthor().getId());
         long count;
 
         if (!ParseUtil.isMessageValid(content)) {

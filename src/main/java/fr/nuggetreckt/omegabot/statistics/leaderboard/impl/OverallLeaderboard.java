@@ -31,24 +31,36 @@ public class OverallLeaderboard extends Leaderboard {
     }
 
     @Override
-    public MessageEmbed getEmbed() {
+    public MessageEmbed getEmbed(@NotNull Member member) {
         List<Member> members = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
+        long memberScore = membersStats.get(member.getId()).getScore();
+        String memberRanking = "";
 
         membersStats.forEach((id, stats) -> members.add(instance.getMemberById(id)));
 
         for (int i = 0; i < members.size(); i++) {
-            if (i >= 10)
-                break;
-            Member member = members.get(i);
-            MemberStats stats = membersStats.get(member.getId());
+            Member m = members.get(i);
+            String name = m.getEffectiveName();
             String nb = getNumber(i + 1);
 
-            sb.append(nb).append(" ").append(member.getEffectiveName()).append(" (").append(stats.getScore()).append(")\n");
+            if (m.getId().equals(member.getId())) {
+                memberRanking = nb;
+                name = "**" + m.getEffectiveName() + "**";
+            }
+            if (i < 10) {
+                MemberStats stats = membersStats.get(m.getId());
+
+                sb.append(nb).append(" ").append(name).append(" (").append(stats.getScore()).append(")\n");
+            }
         }
 
         embedBuilder.clearFields();
-        embedBuilder.addField(" __Classement__ :", sb.toString(), false)
+        embedBuilder.addField("__Classement__ :", sb.toString(), false)
+                .addField("__Toi__ :", String.format("""
+                        ・Ta place : %s
+                        ・Ton score : `%d`
+                        """, memberRanking, memberScore), false)
                 .setTimestamp(new Date().toInstant());
         return embedBuilder.build();
     }
@@ -70,6 +82,7 @@ public class OverallLeaderboard extends Leaderboard {
                 break;
             }
             default: {
+                nb = "#" + nb;
                 break;
             }
         }

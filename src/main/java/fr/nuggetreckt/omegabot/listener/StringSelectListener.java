@@ -2,6 +2,7 @@ package fr.nuggetreckt.omegabot.listener;
 
 import fr.nuggetreckt.omegabot.OmegaBot;
 import fr.nuggetreckt.omegabot.statistics.leaderboard.LeaderboardHandler;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.events.interaction.component.StringSelectInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -18,10 +19,11 @@ public class StringSelectListener extends ListenerAdapter {
     @Override
     public void onStringSelectInteraction(@NotNull StringSelectInteractionEvent event) {
         LeaderboardHandler leaderboardHandler = instance.getLeaderboardHandler();
+        Member member = event.getMember();
 
         if (event.getComponentId().equals("choose-leaderboard")) {
             String id = event.getValues().getFirst().replace("leaderboard-", "");
-            MessageEmbed embed = leaderboardHandler.getLeaderboard(id).getEmbed();
+            MessageEmbed embed = leaderboardHandler.getLeaderboard(id).getEmbed(member);
             event.editMessageEmbeds(embed).queue();
         }
     }

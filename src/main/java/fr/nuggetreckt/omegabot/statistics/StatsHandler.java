@@ -80,10 +80,7 @@ public class StatsHandler {
             memberStats.hundredsCount = hundredsCount;
             memberStats.thousandsCount = thousandsCount;
         });
-
-        MessageChannel channel = instance.getConfig().getCountChannel();
-        Message lasMessage = channel.retrieveMessageById(channel.getLatestMessageId()).complete();
-        long expectedCount = ParseUtil.parseMessage(lasMessage.getContentRaw());
+        long expectedCount = getExpectedCountFromLastMessage();
 
         if (currentNum != expectedCount) { //TODO: A TESTER
             instance.getLogger().warn("Current number was " + currentNum + ", but expected " + expectedCount + ". Set current number to expected value.");
@@ -120,8 +117,9 @@ public class StatsHandler {
         MessageChannel channel = instance.getConfig().getCountChannel();
         MessageHistory history = MessageHistory.getHistoryFromBeginning(channel).complete();
         List<Message> messages = history.getRetrievedHistory().reversed();
-        Message lasMessage = messages.get(history.getRetrievedHistory().size() - 1);
-        long expectedCount = ParseUtil.parseMessage(lasMessage.getContentRaw());
+
+        if (messages.isEmpty()) return;
+        long expectedCount = getExpectedCountFromLastMessage();
         long counted = 0;
         Bar progressBar = new Bar(50, messages.size());
         int i = 0;
@@ -167,6 +165,27 @@ public class StatsHandler {
             instance.getLogger().warn("Current number was " + currentNum + ", but expected " + expectedCount + ". Set current number to expected value.");
             currentNum = expectedCount;
         }
+    }
+
+    private long getExpectedCountFromLastMessage() {
+        MessageChannel channel = instance.getConfig().getCountChannel();
+        Message lastMessage = channel.retrieveMessageById(channel.getLatestMessageId()).complete();
+        long expectedCount = -1;
+
+        if (lastMessage.getAuthor().isBot()) {
+            MessageHistory history = MessageHistory.getHistoryBefore(channel, lastMessage.getId()).complete();
+            List<Message> messages = history.getRetrievedHistory();
+
+            for (Message message : messages) {
+                if (!message.getAuthor().isBot()) {
+                    expectedCount = ParseUtil.parseMessage(message.getContentRaw());
+                    break;
+                }
+            }
+        } else {
+            expectedCount = ParseUtil.parseMessage(lastMessage.getContentRaw());
+        }
+        return expectedCount;
     }
 
     public long getCurrentNum() {

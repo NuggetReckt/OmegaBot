@@ -2,7 +2,9 @@ package fr.nuggetreckt.omegabot.statistics.leaderboard;
 
 import fr.nuggetreckt.omegabot.statistics.MemberStats;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.MessageEmbed;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.HashMap;
@@ -66,7 +68,8 @@ public abstract class Leaderboard {
     /**
      * Get the embed of the current leaderboard
      *
+     * @param member The member that sees the leaderboard
      * @return A {@link MessageEmbed} built with {@link EmbedBuilder}
      */
-    public abstract MessageEmbed getEmbed();
+    public abstract MessageEmbed getEmbed(@NotNull Member member);
 }
