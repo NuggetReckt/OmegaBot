@@ -30,7 +30,13 @@ public class MemberMessageListener extends ListenerAdapter {
         long count;
 
         if (!ParseUtil.isMessageValid(content)) {
-            message.delete().queue();
+            handleInvalidMessage(message);
+            return;
+        }
+        count = Long.parseLong(content);
+
+        if (count != statsHandler.getCurrentNum() + 1) {
+            handleInvalidMessage(message);
             return;
         }
         if (content.endsWith("69")) {
@@ -42,9 +48,10 @@ public class MemberMessageListener extends ListenerAdapter {
             memberStats.hundredsCount++;
         }
         memberStats.counted++;
-        count = Long.parseLong(content);
+        statsHandler.setCurrentNum(statsHandler.getCurrentNum() + 1);
+    }
 
-        //TODO: verify count and stored current value
-        instance.getStatsHandler().setCurrentNum(instance.getStatsHandler().getCurrentNum() + 1);
+    private void handleInvalidMessage(@NotNull Message message) {
+        message.addReaction(Emoji.fromUnicode("❌")).queue();
     }
 }
