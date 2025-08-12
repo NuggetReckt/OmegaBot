@@ -77,7 +77,7 @@ public abstract class Task {
      * @param delay Delay in seconds before task is to be executed
      */
     public Task(long delay) {
-        this(delay * 1000, 0, TaskType.EXECUTE_ONCE);
+        this(delay, 0, TaskType.EXECUTE_ONCE);
     }
 
     /**

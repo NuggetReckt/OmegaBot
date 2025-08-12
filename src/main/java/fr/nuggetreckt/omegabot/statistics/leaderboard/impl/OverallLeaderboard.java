@@ -36,11 +36,11 @@ public class OverallLeaderboard extends Leaderboard {
         StringBuilder sb = new StringBuilder();
         long memberScore = membersStats.get(member.getId()).getScore();
         String memberRanking = "";
+        int i = 0;
 
         membersStats.forEach((id, stats) -> members.add(instance.getMemberById(id)));
 
-        for (int i = 0; i < members.size(); i++) {
-            Member m = members.get(i);
+        for (Member m : members) {
             String name = m.getEffectiveName();
             String nb = getNumber(i + 1);
 
@@ -53,6 +53,7 @@ public class OverallLeaderboard extends Leaderboard {
 
                 sb.append(nb).append(" ").append(name).append(" (").append(stats.getScore()).append(")\n");
             }
+            i++;
         }
 
         embedBuilder.clearFields();

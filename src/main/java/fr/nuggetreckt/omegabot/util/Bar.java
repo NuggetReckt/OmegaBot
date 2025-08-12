@@ -6,10 +6,12 @@ public class Bar {
     private final int maxValue;
     private final int size;
     private int percentage;
+    private int i;
 
     public Bar(int size, int max) {
         this.maxValue = max;
         this.size = size;
+        this.i = 1;
         progressBar = new char[size + 1];
 
         for (int i = 0; i < size; i++) {
@@ -17,7 +19,7 @@ public class Bar {
         }
     }
 
-    public void update(int i) {
+    public void update() {
         double ratio = ((double) i / maxValue);
         int pos = (int) Math.round(ratio * size);
         percentage = (int) Math.round(ratio * 100);
@@ -28,6 +30,7 @@ public class Bar {
         for (int j = 0; j < pos; j++) {
             progressBar[j] = '|';
         }
+        i++;
     }
 
     public void display() {

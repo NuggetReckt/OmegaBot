@@ -12,29 +12,29 @@ public class Config {
         this.instance = instance;
     }
 
-    private final boolean dev = true;
+    private final boolean dev = false;
 
     //Guilds ids
     public String devGuildId = "986026862406950993";
     public String guildId = "690132625398300767";
 
     //Channels ids
-    public String verifyChannelId = "1020311084760047626";
-    public String rulesChannelId = "1020311186123796511";
-    public String takeRoleChannelId = "1020311310220673054";
-    public String countChannelId = "1021107083267026975";
-    public String joinChannelId = "995102579413487686";
-    public String botChannelId = "998975933987967028";
-    public String suggestionChannelId = "999414109781102613";
+    public String verifyChannelId = "828653158720733224";
+    public String rulesChannelId = "712708388349542511";
+    public String takeRoleChannelId = "828653260135071785";
+    public String countChannelId = "828654209787756594";
+    public String joinChannelId = "1404776871920406600";
+    public String botChannelId = "828655293806149643";
+    public String suggestionChannelId = "1404778441345335367";
 
     //Roles ids
-    public String memberRoleId = "1020311604585312286";
-    public String pollsRoleId = "1020311656477229096";
-    public String announcementsRoleId = "1020311696440573962";
-    public String eventsRoleId = "1020311742359806022";
-    public String interestingInformationsRoleId = "1020311776065241190";
-    public String minecraftRoleId = "1020311837532758046";
-    public String hardwareRoleId = "1020311879282855997";
+    public String memberRoleId = "828638607584788531";
+    public String pollsRoleId = "829261806157430825";
+    public String announcementsRoleId = "829261499973238794";
+    public String eventsRoleId = "829261934955986944";
+    public String interestingInformationsRoleId = "951806862213386272";
+    public String minecraftRoleId = "829263205880168479";
+    public String hardwareRoleId = "829263540044824637";
 
     public Guild getGuild() {
         if (dev) return instance.getJDA().getGuildById(devGuildId);

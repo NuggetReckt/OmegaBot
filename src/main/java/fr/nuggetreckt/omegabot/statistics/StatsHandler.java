@@ -20,12 +20,13 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class StatsHandler {
 
     private final OmegaBot instance;
 
-    private HashMap<String, MemberStats> membersStats;
+    private final HashMap<String, MemberStats> membersStats;
     private long currentNum;
 
     private File jsonFile;
@@ -33,6 +34,7 @@ public class StatsHandler {
     public StatsHandler(OmegaBot instance) {
         this.instance = instance;
         this.currentNum = 0;
+        this.membersStats = new HashMap<>();
     }
 
     public void init() {
@@ -47,7 +49,6 @@ public class StatsHandler {
             return;
         }
         instance.getLogger().info("Stats file found. Loading data...");
-        membersStats = new HashMap<>();
         JSONObject obj = null;
 
         try {
@@ -82,7 +83,7 @@ public class StatsHandler {
         });
         long expectedCount = getExpectedCountFromLastMessage();
 
-        if (currentNum != expectedCount) { //TODO: A TESTER
+        if (currentNum != expectedCount) {
             instance.getLogger().warn("Current number was " + currentNum + ", but expected " + expectedCount + ". Set current number to expected value.");
             currentNum = expectedCount;
         }
@@ -113,33 +114,37 @@ public class StatsHandler {
     }
 
     private void initStats() {
-        membersStats = new HashMap<>();
         MessageChannel channel = instance.getConfig().getCountChannel();
-        MessageHistory history = MessageHistory.getHistoryFromBeginning(channel).complete();
-        List<Message> messages = history.getRetrievedHistory().reversed();
+        List<Message> messages = new ArrayList<>();
 
+        try {
+            messages = channel.getIterableHistory().takeAsync(1000000)
+                    .thenApply(ArrayList::new)
+                    .get().reversed();
+        } catch (InterruptedException | ExecutionException e) {
+            instance.getLogger().error("Failed to get messages from channel: " + e.getMessage());
+        }
         if (messages.isEmpty()) return;
+
         long expectedCount = getExpectedCountFromLastMessage();
         long counted = 0;
         Bar progressBar = new Bar(50, messages.size());
         int i = 0;
-        int j = 1;
 
         for (Message message : messages) {
-            progressBar.update(j);
+            progressBar.update();
             progressBar.display();
-            j++;
+            i++;
 
             if (message.getAuthor().isBot()) continue;
             if (!ParseUtil.isMessageValid(message.getContentRaw())) continue;
 
-            if (i > 0) { //TODO: A TESTER
-                long beforeNb = ParseUtil.parseMessage(messages.get(i - 1).getContentRaw());
+            if (i - 1 > 0) {
+                long beforeNb = ParseUtil.parseMessage(messages.get(i - 2).getContentRaw());
                 long currentNb = ParseUtil.parseMessage(message.getContentRaw());
 
                 if (beforeNb != currentNb - 1) continue;
             }
-
             String userId = message.getAuthor().getId();
 
             if (!membersStats.containsKey(userId) || membersStats.get(userId) == null)
@@ -157,11 +162,10 @@ public class StatsHandler {
             }
             ms.counted++;
             counted++;
-            i++;
         }
         System.out.println();
         currentNum = counted;
-        if (currentNum != expectedCount) { //TODO: A TESTER
+        if (currentNum != expectedCount) {
             instance.getLogger().warn("Current number was " + currentNum + ", but expected " + expectedCount + ". Set current number to expected value.");
             currentNum = expectedCount;
         }
