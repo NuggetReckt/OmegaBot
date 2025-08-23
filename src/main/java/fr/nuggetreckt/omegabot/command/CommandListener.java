@@ -1,10 +1,7 @@
 package fr.nuggetreckt.omegabot.command;
 
 import fr.nuggetreckt.omegabot.OmegaBot;
-import fr.nuggetreckt.omegabot.command.impl.LeaderBoardCommand;
-import fr.nuggetreckt.omegabot.command.impl.ShutdownCommand;
-import fr.nuggetreckt.omegabot.command.impl.StatsCommand;
-import fr.nuggetreckt.omegabot.command.impl.SuggestionCommand;
+import fr.nuggetreckt.omegabot.command.impl.*;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -29,6 +26,7 @@ public class CommandListener extends ListenerAdapter {
         registerCommand("stats", new StatsCommand(instance));
         registerCommand("leaderboard", new LeaderBoardCommand(instance));
         registerCommand("shutdown", new ShutdownCommand(instance));
+        registerCommand("reload", new ReloadCommand(instance));
     }
 
     private void registerCommand(String name, Command command) {
