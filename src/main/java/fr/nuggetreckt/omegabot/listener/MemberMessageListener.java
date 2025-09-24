@@ -73,8 +73,8 @@ public class MemberMessageListener extends ListenerAdapter {
 
     private boolean handleMessage(@NotNull Member author, @NotNull Message message) {
         StatsHandler statsHandler = instance.getStatsHandler();
-        String content = ParseUtil.splitMessage(message.getContentRaw());
         MemberStats memberStats = statsHandler.getMemberStats(author.getId());
+        String content = ParseUtil.splitMessage(message.getContentRaw());
         Message before = getValidMessageBefore(message);
         long beforeValue;
         long count;
@@ -83,7 +83,7 @@ public class MemberMessageListener extends ListenerAdapter {
             return false;
         }
         count = Long.parseLong(content);
-        beforeValue = Long.parseLong(before.getContentRaw());
+        beforeValue = Long.parseLong(ParseUtil.splitMessage(before.getContentRaw()));
 
         if (count != beforeValue + 1) {
             return false;
