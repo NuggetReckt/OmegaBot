@@ -137,7 +137,7 @@ public class StatsHandler {
             i++;
 
             if (message.getAuthor().isBot()) continue;
-            if (!ParseUtil.isMessageValid(message.getContentRaw())) continue;
+            if (!ParseUtil.isMessageValid(ParseUtil.splitMessage(message.getContentRaw()))) continue;
 
             if (i - 1 > 0) {
                 long beforeNb = ParseUtil.parseMessage(messages.get(i - 2).getContentRaw());

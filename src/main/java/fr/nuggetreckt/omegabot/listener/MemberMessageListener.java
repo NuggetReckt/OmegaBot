@@ -79,7 +79,7 @@ public class MemberMessageListener extends ListenerAdapter {
         long beforeValue;
         long count;
 
-        if (!ParseUtil.isMessageValid(content) || before == null) {
+        if (before == null || before.getAuthor().getId().equals(author.getId()) || !ParseUtil.isMessageValid(content)) {
             return false;
         }
         count = Long.parseLong(content);
@@ -122,8 +122,9 @@ public class MemberMessageListener extends ListenerAdapter {
 
         for (Message msg : history.getRetrievedHistory()) {
             if (msg.getAuthor().isBot()) continue;
+            if (msg.getAuthor().getId().equals(message.getAuthor().getId())) continue;
 
-            if (!msg.getReactions().equals(INVALID_EMOJI)) {
+            if (ParseUtil.isMessageValid(msg.getContentRaw())) {
                 before = msg;
                 break;
             }
