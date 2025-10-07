@@ -35,7 +35,7 @@ public class CommandListener extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
-        MessageChannel botchannel = instance.getConfig().getBotChannel();
+        MessageChannel botchannel = instance.getConfigHandler().getConfig().getBotChannel();
 
         if (!event.getChannel().equals(botchannel)) {
             event.reply("> Vous n'êtes pas dans le salon " + botchannel.getAsMention() + "!")

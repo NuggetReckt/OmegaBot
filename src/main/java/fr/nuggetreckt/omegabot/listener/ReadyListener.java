@@ -35,7 +35,7 @@ public class ReadyListener implements EventListener {
 
             new Thread(instance::loadMembers).start();
             new Thread(() -> {
-                TextChannel channel = (TextChannel) instance.getConfig().getCountChannel();
+                TextChannel channel = (TextChannel) instance.getConfigHandler().getConfig().getCountChannel();
                 Guild guild = channel.getGuild();
 
                 channel.upsertPermissionOverride(guild.getPublicRole())

@@ -3,12 +3,12 @@ package fr.nuggetreckt.omegabot;
 import fr.nuggetreckt.omegabot.button.ButtonListener;
 import fr.nuggetreckt.omegabot.command.CommandListener;
 import fr.nuggetreckt.omegabot.command.CommandManager;
+import fr.nuggetreckt.omegabot.config.ConfigHandler;
 import fr.nuggetreckt.omegabot.listener.*;
 import fr.nuggetreckt.omegabot.statistics.StatsHandler;
 import fr.nuggetreckt.omegabot.statistics.leaderboard.LeaderboardHandler;
 import fr.nuggetreckt.omegabot.task.TasksHandler;
 import fr.nuggetreckt.omegabot.util.SaveUtil;
-import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Member;
@@ -24,9 +24,8 @@ public class OmegaBot {
 
     private JDA jda;
 
-    private final String token;
     private final OmegaBot instance;
-    private final Config config;
+    private final ConfigHandler configHandler;
 
     private final Logger logger;
 
@@ -40,36 +39,25 @@ public class OmegaBot {
     public OmegaBot() throws RuntimeException {
         instance = this;
         logger = LoggerFactory.getLogger(OmegaBot.class);
-        config = new Config(this);
 
-        getLogger().info("Reading token...");
-
-        //Loading token
-        Dotenv dotenv = Dotenv.configure()
-                .directory("/env/")
-                .filename(".env")
-                .load();
-
-        try {
-            token = dotenv.get("TOKEN");
-        } catch (NullPointerException e) {
-            throw new RuntimeException(e);
-        }
-        if (token == null || token.isEmpty())
-            throw new RuntimeException("Token is null or empty");
+        getLogger().info("Setting up configuration file...");
 
         //Loading modules
+        configHandler = new ConfigHandler(this);
         statsHandler = new StatsHandler(this);
         tasksHandler = new TasksHandler(this);
         leaderboardHandler = new LeaderboardHandler(this);
 
-        getLogger().info("Token OK. Launching JDA...");
+        getLogger().info("Config OK. Launching JDA...");
 
         Signal.handle(new Signal("INT"), signal -> {
+            if (jda == null) {
+                logger.info("Detected SIGINT before JDA is ready, Forcing shutting down.");
+                System.exit(1);
+            }
             if (isShuttingDown) {
                 logger.info("Detected SIGINT twice, Forcing shutting down.");
                 System.exit(1);
-                return;
             }
             isShuttingDown = true;
             SaveUtil.saveAndExit(this);
@@ -79,7 +67,7 @@ public class OmegaBot {
     }
 
     public void build() {
-        jda = JDABuilder.createDefault(token)
+        jda = JDABuilder.createDefault(configHandler.getConfig().getToken())
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .enableIntents(GatewayIntent.GUILD_MESSAGES)
                 .enableIntents(GatewayIntent.GUILD_PRESENCES)
@@ -116,7 +104,7 @@ public class OmegaBot {
     }
 
     public void loadMembers() {
-        members = config.getGuild().loadMembers().get();
+        members = configHandler.getConfig().getGuild().loadMembers().get();
     }
 
     public List<Member> getMembers() {
@@ -135,8 +123,8 @@ public class OmegaBot {
         return logger;
     }
 
-    public Config getConfig() {
-        return config;
+    public ConfigHandler getConfigHandler() {
+        return configHandler;
     }
 
     public StatsHandler getStatsHandler() {

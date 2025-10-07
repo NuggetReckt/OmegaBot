@@ -14,7 +14,7 @@ public class SaveUtil {
     public static void saveAndExit(OmegaBot instance) {
         Thread thread = new Thread(() -> {
             instance.getLogger().info("Saving stats data...");
-            List<Member> members = instance.getConfig().getGuild().loadMembers().get();
+            List<Member> members = instance.getConfigHandler().getConfig().getGuild().loadMembers().get();
 
             saveFile(members, instance);
             instance.getLogger().info("Stats saved.");

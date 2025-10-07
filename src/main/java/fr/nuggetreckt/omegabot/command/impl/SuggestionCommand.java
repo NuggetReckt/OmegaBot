@@ -23,7 +23,7 @@ public class SuggestionCommand extends Command {
 
     @Override
     public void execute(@NotNull SlashCommandInteractionEvent event) {
-        MessageChannel suggestionchannel = instance.getConfig().getSuggestionChannel();
+        MessageChannel suggestionchannel = instance.getConfigHandler().getConfig().getSuggestionChannel();
 
         if (event.getOption("description") == null) {
             event.reply("> La description ne peut pas être vide !")

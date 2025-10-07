@@ -21,12 +21,12 @@ public class RoleButton extends Button {
     }
 
     public void setupRoleButtons() {
-        setupRoleButton("ROLE_POLLS", instance.getConfig().getPollsRole());
-        setupRoleButton("ROLE_ANNOUNCEMENTS", instance.getConfig().getAnnouncementsRole());
-        setupRoleButton("ROLE_EVENTS", instance.getConfig().getEventsRole());
-        setupRoleButton("ROLE_INTERESTING_INFORMATIONS", instance.getConfig().getInterestingInformationsRole());
-        setupRoleButton("ROLE_MINECRAFT", instance.getConfig().getMinecraftRole());
-        setupRoleButton("ROLE_HARDWARE_TECH", instance.getConfig().getHardwareRole());
+        setupRoleButton("ROLE_POLLS", instance.getConfigHandler().getConfig().getPollsRole());
+        setupRoleButton("ROLE_ANNOUNCEMENTS", instance.getConfigHandler().getConfig().getAnnouncementsRole());
+        setupRoleButton("ROLE_EVENTS", instance.getConfigHandler().getConfig().getEventsRole());
+        setupRoleButton("ROLE_INTERESTING_INFORMATIONS", instance.getConfigHandler().getConfig().getInterestingInformationsRole());
+        setupRoleButton("ROLE_MINECRAFT", instance.getConfigHandler().getConfig().getMinecraftRole());
+        setupRoleButton("ROLE_HARDWARE_TECH", instance.getConfigHandler().getConfig().getHardwareRole());
     }
 
     private void setupRoleButton(String name, Role role) {

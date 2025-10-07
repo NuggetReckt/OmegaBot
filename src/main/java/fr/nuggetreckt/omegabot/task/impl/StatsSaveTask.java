@@ -19,7 +19,7 @@ public class StatsSaveTask extends Task {
 
     @Override
     protected void execute() {
-        List<Member> members = instance.getConfig().getGuild().loadMembers().get();
+        List<Member> members = instance.getConfigHandler().getConfig().getGuild().loadMembers().get();
 
         instance.getLogger().info("[AUTOSAVE] Saving stats...");
         SaveUtil.saveFile(members, instance);
