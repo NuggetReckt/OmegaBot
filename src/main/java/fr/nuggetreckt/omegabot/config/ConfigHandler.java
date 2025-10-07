@@ -43,6 +43,7 @@ public class ConfigHandler {
     }
 
     public void reload() {
+        config = null;
         loadFile();
     }
 
