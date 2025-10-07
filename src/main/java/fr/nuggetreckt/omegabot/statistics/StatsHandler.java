@@ -38,7 +38,7 @@ public class StatsHandler {
     }
 
     public void init() {
-        List<Member> members = instance.getConfig().getGuild().loadMembers().get();
+        List<Member> members = instance.getConfigHandler().getConfig().getGuild().loadMembers().get();
         jsonFile = new File("stats.json");
 
         if (!jsonFile.exists()) {
@@ -114,7 +114,7 @@ public class StatsHandler {
     }
 
     private void initStats() {
-        MessageChannel channel = instance.getConfig().getCountChannel();
+        MessageChannel channel = instance.getConfigHandler().getConfig().getCountChannel();
         List<Message> messages = new ArrayList<>();
 
         try {
@@ -172,7 +172,7 @@ public class StatsHandler {
     }
 
     private long getExpectedCountFromLastMessage() {
-        MessageChannel channel = instance.getConfig().getCountChannel();
+        MessageChannel channel = instance.getConfigHandler().getConfig().getCountChannel();
         Message lastMessage = channel.retrieveMessageById(channel.getLatestMessageId()).complete();
         long expectedCount = -1;
 
@@ -202,7 +202,7 @@ public class StatsHandler {
 
     public List<Member> getActiveMembers() {
         List<Member> members = new ArrayList<>();
-        Guild currentGuild = instance.getConfig().getGuild();
+        Guild currentGuild = instance.getConfigHandler().getConfig().getGuild();
 
         membersStats.forEach((id, stats) -> {
             if (stats.counted > 0)

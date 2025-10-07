@@ -23,9 +23,9 @@ public class SendEmbedsTask extends Task {
 
     @Override
     public void execute() {
-        MessageChannel takeRoleChannel = instance.getConfig().getTakeRoleChannel();
-        MessageChannel verifyChannel = instance.getConfig().getVerifyChannel();
-        MessageChannel rulesChannel = instance.getConfig().getRulesChannel();
+        MessageChannel takeRoleChannel = instance.getConfigHandler().getConfig().getTakeRoleChannel();
+        MessageChannel verifyChannel = instance.getConfigHandler().getConfig().getVerifyChannel();
+        MessageChannel rulesChannel = instance.getConfigHandler().getConfig().getRulesChannel();
 
         takeRoleEmbedSender(takeRoleChannel);
         verifyEmbedSender(verifyChannel);

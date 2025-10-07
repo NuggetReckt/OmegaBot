@@ -31,7 +31,7 @@ public class MemberMessageListener extends ListenerAdapter {
     @Override
     public void onMessageUpdate(@NotNull MessageUpdateEvent event) {
         if (event.getAuthor().isBot()) return;
-        if (!event.getChannel().getId().equals(instance.getConfig().getCountChannel().getId())) return;
+        if (!event.getChannel().getId().equals(instance.getConfigHandler().getConfig().getCountChannel().getId())) return;
 
         Member author = event.getMember();
         Message message = event.getMessage();
@@ -60,7 +60,7 @@ public class MemberMessageListener extends ListenerAdapter {
     @Override
     public void onMessageReceived(@NotNull MessageReceivedEvent event) {
         if (event.getAuthor().isBot()) return;
-        if (!event.getChannel().getId().equals(instance.getConfig().getCountChannel().getId())) return;
+        if (!event.getChannel().getId().equals(instance.getConfigHandler().getConfig().getCountChannel().getId())) return;
 
         Member author = event.getMember();
         Message message = event.getMessage();

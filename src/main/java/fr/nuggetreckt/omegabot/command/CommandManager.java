@@ -28,6 +28,7 @@ public class CommandManager extends ListenerAdapter {
         commandData.add(Commands.slash("shutdown", "Shutdown le bot."));
 
         commandData.add(Commands.slash("reload", "Reload les leaderboards."));
+        commandData.add(Commands.slash("reloadconfig", "Reload la configuration."));
 
         event.getGuild().updateCommands().addCommands(commandData).queue();
     }

@@ -1,0 +1,66 @@
+{
+    "token": "",
+    "guild_id": "",
+    "channels": [
+        {
+            "id": "verify",
+            "channel_id": ""
+        },
+        {
+            "id": "rules",
+            "channel_id": ""
+        },
+        {
+            "id": "take_role",
+            "channel_id": ""
+        },
+        {
+            "id": "counter",
+            "channel_id": ""
+        },
+        {
+            "id": "join",
+            "channel_id": ""
+        },
+        {
+            "id": "bot",
+            "channel_id": ""
+        },
+        {
+            "id": "suggestions",
+            "channel_id": ""
+        }
+    ],
+    "roles": [
+        {
+            "id": "member",
+            "role_id": ""
+        },
+        {
+            "id": "polls",
+            "role_id": ""
+        },
+        {
+            "id": "announcements",
+            "role_id": ""
+        },
+        {
+            "id": "events",
+            "role_id": ""
+        },
+        {
+            "id": "interesting_infos",
+            "role_id": ""
+        },
+        {
+            "id": "minecraft",
+            "role_id": ""
+        },
+        {
+            "id": "hardware",
+            "role_id": ""
+        }
+    ],
+    "version": "0.1.0",
+    "debug": false
+}

@@ -27,6 +27,7 @@ public class CommandListener extends ListenerAdapter {
         registerCommand("leaderboard", new LeaderBoardCommand(instance));
         registerCommand("shutdown", new ShutdownCommand(instance));
         registerCommand("reload", new ReloadCommand(instance));
+        registerCommand("reloadconfig", new ReloadConfigCommand(instance));
     }
 
     private void registerCommand(String name, Command command) {
@@ -35,7 +36,7 @@ public class CommandListener extends ListenerAdapter {
 
     @Override
     public void onSlashCommandInteraction(@NotNull SlashCommandInteractionEvent event) {
-        MessageChannel botchannel = instance.getConfig().getBotChannel();
+        MessageChannel botchannel = instance.getConfigHandler().getConfig().getBotChannel();
 
         if (!event.getChannel().equals(botchannel)) {
             event.reply("> Vous n'êtes pas dans le salon " + botchannel.getAsMention() + "!")

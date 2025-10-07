@@ -21,7 +21,7 @@ public class VerifyButton extends Button {
     public void execute(@NotNull ButtonInteractionEvent event) {
         if (event.getComponentId().equals("VERIFY")) {
             Member member = event.getMember();
-            Role role = instance.getConfig().getMemberRole();
+            Role role = instance.getConfigHandler().getConfig().getMemberRole();
 
             assert member != null;
 

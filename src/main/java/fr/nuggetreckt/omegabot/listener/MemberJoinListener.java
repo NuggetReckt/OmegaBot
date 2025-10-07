@@ -33,7 +33,7 @@ public class MemberJoinListener extends ListenerAdapter {
                 .setTimestamp(new Date().toInstant());
 
         //Send embed message
-        instance.getConfig().getJoinChannel().sendMessageEmbeds(join.build())
+        instance.getConfigHandler().getConfig().getJoinChannel().sendMessageEmbeds(join.build())
                 .queue();
 
         try {
