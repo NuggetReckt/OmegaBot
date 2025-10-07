@@ -28,8 +28,6 @@ public class ReloadConfigCommand extends Command {
         event.reply("> Reload de la configuration.").setEphemeral(true)
                 .queue();
 
-        System.out.println(instance.getConfigHandler().getConfig().getHardwareRole().getId());
         instance.getConfigHandler().reload();
-        System.out.println(instance.getConfigHandler().getConfig().getHardwareRole().getId());
     }
 }
