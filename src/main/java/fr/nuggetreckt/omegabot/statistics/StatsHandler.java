@@ -4,11 +4,10 @@ import fr.nuggetreckt.omegabot.OmegaBot;
 import fr.nuggetreckt.omegabot.exception.MemberNotFoundException;
 import fr.nuggetreckt.omegabot.util.Bar;
 import fr.nuggetreckt.omegabot.util.JsonUtil;
-import fr.nuggetreckt.omegabot.util.ParseUtil;
+import fr.nuggetreckt.omegabot.util.MessageUtil;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONArray;
@@ -117,6 +116,8 @@ public class StatsHandler {
         MessageChannel channel = instance.getConfigHandler().getConfig().getCountChannel();
         List<Message> messages = new ArrayList<>();
 
+        Bar progressBar = new Bar(50, 0);
+        progressBar.display();
         try {
             messages = channel.getIterableHistory().takeAsync(1000000)
                     .thenApply(ArrayList::new)
@@ -128,22 +129,29 @@ public class StatsHandler {
 
         long expectedCount = getExpectedCountFromLastMessage();
         long counted = 0;
-        Bar progressBar = new Bar(50, messages.size());
-        int i = 0;
 
-        for (Message message : messages) {
+        progressBar.setMaxValue(messages.size());
+        for (int j = 0; j < messages.size(); j++) {
+            Message message = messages.get(j);
             progressBar.update();
             progressBar.display();
-            i++;
 
-            if (message.getAuthor().isBot()) continue;
-            if (!ParseUtil.isMessageValid(ParseUtil.splitMessage(message.getContentRaw()))) continue;
+            if (message.getAuthor().isBot() || !MessageUtil.isMessageValid(message.getContentRaw())) {
+                messages.remove(message);
+                j--;
+                continue;
+            }
 
-            if (i - 1 > 0) {
-                long beforeNb = ParseUtil.parseMessage(messages.get(i - 2).getContentRaw());
-                long currentNb = ParseUtil.parseMessage(message.getContentRaw());
+            if (j > 0) {
+                String beforeContent = messages.get(j - 1).getContentRaw();
+                long beforeNb = MessageUtil.parseMessage(beforeContent);
+                long currentNb = MessageUtil.parseMessage(message.getContentRaw());
 
-                if (beforeNb != currentNb - 1) continue;
+                if (beforeNb != currentNb - 1) {
+                    messages.remove(message);
+                    j--;
+                    continue;
+                }
             }
             String userId = message.getAuthor().getId();
 
@@ -151,7 +159,7 @@ public class StatsHandler {
                 initMemberStats(userId);
 
             MemberStats ms = membersStats.get(userId);
-            String content = ParseUtil.splitMessage(message.getContentRaw());
+            String content = MessageUtil.splitMessage(message.getContentRaw());
 
             if (content.endsWith("69")) {
                 ms.magicNumberCount++;
@@ -166,7 +174,7 @@ public class StatsHandler {
         System.out.println();
         currentNum = counted;
         if (currentNum != expectedCount) {
-            instance.getLogger().warn("Current number was " + currentNum + ", but expected " + expectedCount + ". Set current number to expected value.");
+            instance.getLogger().warn("Current number is " + currentNum + ", but expected " + expectedCount + ". Setting current number to expected value.");
             currentNum = expectedCount;
         }
     }
@@ -176,18 +184,11 @@ public class StatsHandler {
         Message lastMessage = channel.retrieveMessageById(channel.getLatestMessageId()).complete();
         long expectedCount = -1;
 
-        if (lastMessage.getAuthor().isBot()) {
-            MessageHistory history = MessageHistory.getHistoryBefore(channel, lastMessage.getId()).complete();
-            List<Message> messages = history.getRetrievedHistory();
-
-            for (Message message : messages) {
-                if (!message.getAuthor().isBot()) {
-                    expectedCount = ParseUtil.parseMessage(message.getContentRaw());
-                    break;
-                }
-            }
+        if (!lastMessage.getAuthor().isBot() && MessageUtil.isMessageValid(lastMessage.getContentRaw())) {
+            expectedCount = MessageUtil.parseMessage(lastMessage.getContentRaw());
         } else {
-            expectedCount = ParseUtil.parseMessage(lastMessage.getContentRaw());
+            Message validMessage = MessageUtil.getValidMessageBefore(lastMessage);
+            expectedCount = MessageUtil.parseMessage(validMessage.getContentRaw());
         }
         return expectedCount;
     }

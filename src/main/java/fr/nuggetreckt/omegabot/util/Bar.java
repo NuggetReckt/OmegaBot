@@ -3,12 +3,12 @@ package fr.nuggetreckt.omegabot.util;
 public class Bar {
 
     private final char[] progressBar;
-    private final int maxValue;
+    private long maxValue;
     private final int size;
     private int percentage;
     private int i;
 
-    public Bar(int size, int max) {
+    public Bar(int size, long max) {
         this.maxValue = max;
         this.size = size;
         this.i = 1;
@@ -45,5 +45,9 @@ public class Bar {
             color = AnsiUtil.YELLOW;
         }
         System.out.print("\r" + AnsiUtil.RESET + "[" + AnsiUtil.GREEN + bar + AnsiUtil.RESET + "] " + color + percentage + "%" + AnsiUtil.RESET);
+    }
+
+    public void setMaxValue(long value) {
+        this.maxValue = value;
     }
 }

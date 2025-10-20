@@ -3,7 +3,7 @@ package fr.nuggetreckt.omegabot.listener;
 import fr.nuggetreckt.omegabot.OmegaBot;
 import fr.nuggetreckt.omegabot.statistics.MemberStats;
 import fr.nuggetreckt.omegabot.statistics.StatsHandler;
-import fr.nuggetreckt.omegabot.util.ParseUtil;
+import fr.nuggetreckt.omegabot.util.MessageUtil;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageHistory;
@@ -74,16 +74,16 @@ public class MemberMessageListener extends ListenerAdapter {
     private boolean handleMessage(@NotNull Member author, @NotNull Message message) {
         StatsHandler statsHandler = instance.getStatsHandler();
         MemberStats memberStats = statsHandler.getMemberStats(author.getId());
-        String content = ParseUtil.splitMessage(message.getContentRaw());
-        Message before = getValidMessageBefore(message);
+        String content = MessageUtil.splitMessage(message.getContentRaw());
+        Message before = MessageUtil.getValidMessageBefore(message);
         long beforeValue;
         long count;
 
-        if (before == null || before.getAuthor().getId().equals(author.getId()) || !ParseUtil.isMessageValid(content)) {
+        if (before == null || before.getAuthor().getId().equals(author.getId()) || !MessageUtil.isMessageValid(content)) {
             return false;
         }
-        count = Long.parseLong(content);
-        beforeValue = Long.parseLong(ParseUtil.splitMessage(before.getContentRaw()));
+        count = MessageUtil.parseMessage(content);
+        beforeValue = MessageUtil.parseMessage(before.getContentRaw());
 
         if (count != beforeValue + 1) {
             return false;
@@ -114,21 +114,5 @@ public class MemberMessageListener extends ListenerAdapter {
             messagesToSkip.add(message.getId());
         }
         message.removeReaction(INVALID_EMOJI).queue();
-    }
-
-    private Message getValidMessageBefore(@NotNull Message message) {
-        MessageHistory history = message.getChannel().getHistoryBefore(message, 5).complete();
-        Message before = null;
-
-        for (Message msg : history.getRetrievedHistory()) {
-            if (msg.getAuthor().isBot()) continue;
-            if (msg.getAuthor().getId().equals(message.getAuthor().getId())) continue;
-
-            if (ParseUtil.isMessageValid(msg.getContentRaw())) {
-                before = msg;
-                break;
-            }
-        }
-        return before;
     }
 }
