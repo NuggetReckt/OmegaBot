@@ -147,11 +147,7 @@ public class StatsHandler {
                 long beforeNb = MessageUtil.parseMessage(beforeContent);
                 long currentNb = MessageUtil.parseMessage(message.getContentRaw());
 
-                if (beforeNb != currentNb - 1) {
-                    messages.remove(message);
-                    j--;
-                    continue;
-                }
+                if (beforeNb != currentNb - 1) continue;
             }
             String userId = message.getAuthor().getId();
 
