@@ -74,18 +74,19 @@ public class MemberMessageListener extends ListenerAdapter {
     private boolean handleMessage(@NotNull Member author, @NotNull Message message) {
         StatsHandler statsHandler = instance.getStatsHandler();
         MemberStats memberStats = statsHandler.getMemberStats(author.getId());
-        String content = MessageUtil.splitMessage(message.getContentRaw());
-        Message before = MessageUtil.getValidMessageBefore(message);
-        long beforeValue;
+        Message validBefore = MessageUtil.getValidMessageBefore(message);
+        Message countBefore = MessageUtil.getMessageBefore(message);
+        long validBeforeValue;
         long count;
 
-        if (before == null || before.getAuthor().getId().equals(author.getId()) || !MessageUtil.isMessageValid(content)) {
+        if (validBefore == null || countBefore.getAuthor().getId().equals(message.getAuthor().getId()) || !MessageUtil.isMessageValid(message.getContentRaw())) {
             return false;
         }
-        count = MessageUtil.parseMessage(content);
-        beforeValue = MessageUtil.parseMessage(before.getContentRaw());
+        String content = MessageUtil.splitMessage(message.getContentRaw());
+        count = MessageUtil.parseMessage(message.getContentRaw());
+        validBeforeValue = MessageUtil.parseMessage(validBefore.getContentRaw());
 
-        if (count != beforeValue + 1) {
+        if (count != validBeforeValue + 1) {
             return false;
         }
         if (messagesToSkip.contains(message.getId())) {
