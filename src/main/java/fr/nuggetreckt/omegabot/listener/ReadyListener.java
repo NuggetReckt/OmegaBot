@@ -33,11 +33,11 @@ public class ReadyListener implements EventListener {
                                             __/ |
                                            |___/""");
 
-            new Thread(instance::loadMembers).start();
             new Thread(() -> {
                 TextChannel channel = (TextChannel) instance.getConfigHandler().getConfig().getCountChannel();
                 Guild guild = channel.getGuild();
 
+                instance.loadMembers();
                 channel.upsertPermissionOverride(guild.getPublicRole())
                         .setDenied(Permission.MESSAGE_SEND).queue();
                 Message message = channel.sendMessage("> **Merci de patienter le temps de l'initialisation des données.**").complete();

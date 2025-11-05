@@ -103,8 +103,9 @@ public class OmegaBot {
         return null;
     }
 
-    public void loadMembers() {
+    public List<Member> loadMembers() {
         members = configHandler.getConfig().getGuild().loadMembers().get();
+        return members;
     }
 
     public List<Member> getMembers() {

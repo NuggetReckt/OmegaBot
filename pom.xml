@@ -6,7 +6,7 @@
 
     <groupId>fr.nuggetreckt.omegabot</groupId>
     <artifactId>OmegaBot</artifactId>
-    <version>2.0.3-BETA</version>
+    <version>2.0.4-BETA</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

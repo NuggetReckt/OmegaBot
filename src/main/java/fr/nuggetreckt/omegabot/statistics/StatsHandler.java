@@ -37,7 +37,7 @@ public class StatsHandler {
     }
 
     public void init() {
-        List<Member> members = instance.getConfigHandler().getConfig().getGuild().loadMembers().get();
+        List<Member> members = instance.getMembers();
         jsonFile = new File("stats.json");
 
         if (!jsonFile.exists()) {
