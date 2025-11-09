@@ -14,7 +14,6 @@ public class LeaderboardUpdateTask extends Task {
 
     @Override
     protected void execute() {
-        instance.loadMembers();
         instance.getLeaderboardHandler().updateLeaderboards();
     }
 }

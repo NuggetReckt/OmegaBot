@@ -132,6 +132,11 @@ public class StatsHandler {
 
         progressBar.setMaxValue(messages.size());
         for (int j = 0; j < messages.size(); j++) {
+            try { //tmp
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             Message message = messages.get(j);
             progressBar.update();
             progressBar.display();

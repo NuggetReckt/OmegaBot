@@ -10,6 +10,8 @@ import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.EventListener;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class ReadyListener implements EventListener {
 
     private final OmegaBot instance;
@@ -33,6 +35,8 @@ public class ReadyListener implements EventListener {
                                             __/ |
                                            |___/""");
 
+            AtomicBoolean hasLoaded = new AtomicBoolean(false);
+
             new Thread(() -> {
                 TextChannel channel = (TextChannel) instance.getConfigHandler().getConfig().getCountChannel();
                 Guild guild = channel.getGuild();
@@ -51,11 +55,21 @@ public class ReadyListener implements EventListener {
                 channel.upsertPermissionOverride(guild.getPublicRole())
                         .setAllowed(Permission.MESSAGE_SEND).queue();
                 message.delete().queue();
+                hasLoaded.set(true);
             }).start();
 
-            instance.getLogger().info("Starting tasks...");
-            instance.getTasksHandler().runTasks();
-            instance.getLogger().info("Tasks started.");
+            new Thread(() -> {
+                while (!hasLoaded.get()) {
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        instance.getLogger().error(e.getMessage());
+                    }
+                }
+                instance.getLogger().info("Starting tasks...");
+                instance.getTasksHandler().runTasks();
+                instance.getLogger().info("Tasks started.");
+            }).start();
         }
     }
 }

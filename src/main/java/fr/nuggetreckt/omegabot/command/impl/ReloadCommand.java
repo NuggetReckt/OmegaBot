@@ -25,9 +25,12 @@ public class ReloadCommand extends Command {
                     .queue();
             return;
         }
-        event.reply("> Mise à jour des leaderboards.").setEphemeral(true)
-                .queue();
+        new Thread(() -> {
+            instance.loadMembers();
+            instance.getLeaderboardHandler().updateLeaderboards();
+        }).start();
 
-        instance.getLeaderboardHandler().updateLeaderboards();
+        event.reply("> Leaderboards mis à jour.").setEphemeral(true)
+                .queue();
     }
 }
