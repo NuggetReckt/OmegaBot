@@ -41,10 +41,16 @@ public class ReadyListener implements EventListener {
                 TextChannel channel = (TextChannel) instance.getConfigHandler().getConfig().getCountChannel();
                 Guild guild = channel.getGuild();
 
-                instance.loadMembers();
                 channel.upsertPermissionOverride(guild.getPublicRole())
                         .setDenied(Permission.MESSAGE_SEND).queue();
                 Message message = channel.sendMessage("> **Merci de patienter le temps de l'initialisation des données.**").complete();
+
+                instance.loadMembers();
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    instance.getLogger().error(e.getMessage());
+                }
 
                 instance.getLogger().info("Member stats initialization...");
                 instance.getStatsHandler().init();

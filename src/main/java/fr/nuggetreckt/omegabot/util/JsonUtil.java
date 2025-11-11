@@ -12,12 +12,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalTime;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Queue;
 
 public class JsonUtil {
 
     @NotNull
-    public static JSONObject createJson(@NotNull List<Member> members, @NotNull StatsHandler statsHandler) {
+    public static JSONObject createJson(@NotNull Queue<Member> members, @NotNull StatsHandler statsHandler) {
         JSONArray memberArray = new JSONArray();
         JSONObject obj = new JSONObject();
         long currentNum = statsHandler.getCurrentNum();

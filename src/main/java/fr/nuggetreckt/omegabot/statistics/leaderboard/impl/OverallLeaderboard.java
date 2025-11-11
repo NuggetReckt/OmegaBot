@@ -41,6 +41,9 @@ public class OverallLeaderboard extends Leaderboard {
         membersStats.forEach((id, stats) -> members.add(instance.getMemberById(id)));
 
         for (Member m : members) {
+            if (m == null) continue;
+            if (m.getUser().isBot()) continue;
+
             String name = m.getEffectiveName();
             String nb = getNumber(i + 1);
 

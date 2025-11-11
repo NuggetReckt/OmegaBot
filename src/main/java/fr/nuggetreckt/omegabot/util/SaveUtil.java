@@ -7,14 +7,14 @@ import org.json.simple.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.Queue;
 
 public class SaveUtil {
 
     public static void saveAndExit(OmegaBot instance) {
         Thread thread = new Thread(() -> {
             instance.getLogger().info("Saving stats data...");
-            List<Member> members = instance.getConfigHandler().getConfig().getGuild().loadMembers().get();
+            Queue<Member> members = instance.loadMembers();
 
             saveFile(members, instance);
             instance.getLogger().info("Stats saved.");
@@ -24,7 +24,7 @@ public class SaveUtil {
         thread.start();
     }
 
-    public static void saveFile(List<Member> members, @NotNull OmegaBot instance) {
+    public static void saveFile(Queue<Member> members, @NotNull OmegaBot instance) {
         File jsonFile = instance.getStatsHandler().getFile();
         JSONObject obj = JsonUtil.createJson(members, instance.getStatsHandler());
 

@@ -19,6 +19,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Queue;
 import java.util.concurrent.ExecutionException;
 
 public class StatsHandler {
@@ -37,7 +38,7 @@ public class StatsHandler {
     }
 
     public void init() {
-        List<Member> members = instance.getMembers();
+        Queue<Member> members = instance.getMembers();
         jsonFile = new File("stats.json");
 
         if (!jsonFile.exists()) {
@@ -97,7 +98,7 @@ public class StatsHandler {
         membersStats.putIfAbsent(id, new MemberStats());
     }
 
-    private void initJSON(@NotNull List<Member> members) {
+    private void initJSON(@NotNull Queue<Member> members) {
         JSONObject obj = JsonUtil.createJson(members, this);
 
         //Write JSON object to file
@@ -132,11 +133,6 @@ public class StatsHandler {
 
         progressBar.setMaxValue(messages.size());
         for (int j = 0; j < messages.size(); j++) {
-            try { //tmp
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
             Message message = messages.get(j);
             progressBar.update();
             progressBar.display();

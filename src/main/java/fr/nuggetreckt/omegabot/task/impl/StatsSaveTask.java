@@ -5,7 +5,7 @@ import fr.nuggetreckt.omegabot.task.Task;
 import fr.nuggetreckt.omegabot.util.SaveUtil;
 import net.dv8tion.jda.api.entities.Member;
 
-import java.util.List;
+import java.util.Queue;
 
 public class StatsSaveTask extends Task {
 
@@ -19,7 +19,7 @@ public class StatsSaveTask extends Task {
 
     @Override
     protected void execute() {
-        List<Member> members = instance.loadMembers();
+        Queue<Member> members = instance.loadMembers();
 
         instance.getLogger().info("[AUTOSAVE] Saving stats...");
         SaveUtil.saveFile(members, instance);
