@@ -1,6 +1,7 @@
 package fr.nuggetreckt.omegabot.statistics.leaderboard;
 
 import fr.nuggetreckt.omegabot.OmegaBot;
+import fr.nuggetreckt.omegabot.statistics.leaderboard.impl.MagicNumberLeaderboard;
 import fr.nuggetreckt.omegabot.statistics.leaderboard.impl.OverallLeaderboard;
 
 import java.util.HashMap;
@@ -37,6 +38,7 @@ public class LeaderboardHandler {
 
     private void setLeaderboards() {
         setLeaderboard("overall", new OverallLeaderboard(instance));
+        setLeaderboard("magic_number", new MagicNumberLeaderboard(instance));
     }
 
     private void setLeaderboard(String id, Leaderboard leaderboard) {

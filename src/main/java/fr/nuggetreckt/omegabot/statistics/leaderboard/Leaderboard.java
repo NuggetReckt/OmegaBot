@@ -1,5 +1,6 @@
 package fr.nuggetreckt.omegabot.statistics.leaderboard;
 
+import fr.nuggetreckt.omegabot.OmegaBot;
 import fr.nuggetreckt.omegabot.statistics.MemberStats;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
@@ -8,8 +9,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class Leaderboard {
+
+    /**
+     * The bot instance
+     */
+    protected final OmegaBot instance;
 
     /**
      * The display name of the leaderboard
@@ -29,18 +36,24 @@ public abstract class Leaderboard {
     /**
      * Constructor for leaderboard
      *
-     * @param membersStats The member statistics stored as an HashMap (See {@link MemberStats})
-     * @param displayName  The display name of the leaderboard
+     * @param instance    The bot instance
+     * @param displayName The display name of the leaderboard
      */
-    public Leaderboard(HashMap<String, MemberStats> membersStats, String displayName) {
+    public Leaderboard(@NotNull OmegaBot instance, String displayName) {
+        this.instance = instance;
         this.displayName = displayName;
-        this.membersStats = membersStats;
+        this.membersStats = instance.getStatsHandler().getMembersStats();
         this.embedBuilder = new EmbedBuilder();
 
         embedBuilder.setTitle("\uD83C\uDFC6 ・ Leaderboard (" + displayName + ")")
                 .setColor(new Color(255, 255, 255, 1))
                 .setFooter("OmegaBot - NuggetReckt", "https://media.discordapp.net/attachments/712679066872053810/1017822877799686225/unknown.png");
     }
+
+    /**
+     * Updates the member list content
+     */
+    public abstract void update();
 
     /**
      * Get the display name of the leaderboard
@@ -52,24 +65,57 @@ public abstract class Leaderboard {
     }
 
     /**
-     * Get sorted member stats map for current leaderboard
-     *
-     * @return A members stats map
-     */
-    public HashMap<String, MemberStats> getMembersStats() {
-        return membersStats;
-    }
-
-    /**
-     * Updates the member list content
-     */
-    public abstract void update();
-
-    /**
      * Get the embed of the current leaderboard
      *
      * @param member The member that sees the leaderboard
      * @return A {@link MessageEmbed} built with {@link EmbedBuilder}
      */
     public abstract MessageEmbed getEmbed(@NotNull Member member);
+
+    /**
+     * Get the member's ranking
+     *
+     * @param member The member to get the ranking for
+     * @return The member's ranking
+     */
+    protected int getMemberRanking(@NotNull Member member) {
+        AtomicInteger ranking = new AtomicInteger();
+
+        membersStats.forEach((id, stats) -> {
+            if (id.equals(member.getId()))
+                return;
+            ranking.getAndIncrement();
+        });
+        return ranking.get();
+    }
+
+    /**
+     * Get formatted number for leaderboard
+     *
+     * @param i The number to format
+     * @return The formatted number
+     */
+    protected String getFormattedRanking(int i) {
+        String nb = String.valueOf(i);
+
+        switch (i) {
+            case 1: {
+                nb = ":one:";
+                break;
+            }
+            case 2: {
+                nb = ":two:";
+                break;
+            }
+            case 3: {
+                nb = ":three:";
+                break;
+            }
+            default: {
+                nb = "#" + nb;
+                break;
+            }
+        }
+        return nb;
+    }
 }

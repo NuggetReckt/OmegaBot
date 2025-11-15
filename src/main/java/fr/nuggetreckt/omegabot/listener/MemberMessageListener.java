@@ -1,6 +1,7 @@
 package fr.nuggetreckt.omegabot.listener;
 
 import fr.nuggetreckt.omegabot.OmegaBot;
+import fr.nuggetreckt.omegabot.exception.MemberNotFoundException;
 import fr.nuggetreckt.omegabot.statistics.MemberStats;
 import fr.nuggetreckt.omegabot.statistics.StatsHandler;
 import fr.nuggetreckt.omegabot.util.MessageUtil;
@@ -73,13 +74,19 @@ public class MemberMessageListener extends ListenerAdapter {
 
     private boolean handleMessage(@NotNull Member author, @NotNull Message message) {
         StatsHandler statsHandler = instance.getStatsHandler();
-        MemberStats memberStats = statsHandler.getMemberStats(author.getId());
         Message validBefore = MessageUtil.getValidMessageBefore(message);
         Message countBefore = MessageUtil.getMessageBefore(message);
+        MemberStats memberStats;
         long validBeforeValue;
         long count;
 
-        if (validBefore == null || countBefore.getAuthor().getId().equals(message.getAuthor().getId()) || !MessageUtil.isMessageValid(message.getContentRaw())) {
+        try {
+            statsHandler.getMemberStats(author.getId());
+        } catch (MemberNotFoundException e) {
+            statsHandler.initMemberStats(author.getId());
+        }
+        memberStats = statsHandler.getMemberStats(author.getId());
+        if (memberStats == null || validBefore == null || countBefore.getAuthor().getId().equals(message.getAuthor().getId()) || !MessageUtil.isMessageValid(message.getContentRaw())) {
             return false;
         }
         String content = MessageUtil.splitMessage(message.getContentRaw());

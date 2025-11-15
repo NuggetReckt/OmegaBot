@@ -10,17 +10,17 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class OverallLeaderboard extends Leaderboard {
+public class MagicNumberLeaderboard extends Leaderboard {
 
-    public OverallLeaderboard(@NotNull OmegaBot instance) {
-        super(instance, "Général");
+    public MagicNumberLeaderboard(@NotNull OmegaBot instance) {
+        super(instance, "Nombre magique");
     }
 
     @Override
     public void update() {
         membersStats = membersStats.entrySet()
                 .stream()
-                .sorted((o1, o2) -> (int) (o2.getValue().getScore() - o1.getValue().getScore()))
+                .sorted((o1, o2) -> (int) (o2.getValue().magicNumberCount - o1.getValue().magicNumberCount))
                 .collect(Collectors.toMap(
                         Map.Entry::getKey,
                         Map.Entry::getValue,
@@ -31,8 +31,8 @@ public class OverallLeaderboard extends Leaderboard {
     public MessageEmbed getEmbed(@NotNull Member member) {
         List<Member> members = new ArrayList<>();
         StringBuilder sb = new StringBuilder();
-        long memberScore = membersStats.get(member.getId()).getScore();
-        String memberRanking = "";
+        long counted = membersStats.get(member.getId()).magicNumberCount;
+        String memberRanking = getFormattedRanking(getMemberRanking(member));
         int i = 0;
 
         membersStats.forEach((id, stats) -> members.add(instance.getMemberById(id)));
@@ -51,7 +51,7 @@ public class OverallLeaderboard extends Leaderboard {
             if (i < 10) {
                 MemberStats stats = membersStats.get(m.getId());
 
-                sb.append(nb).append(" ").append(name).append(" (").append(stats.getScore()).append(")\n");
+                sb.append(nb).append(" ").append(name).append(" (").append(stats.magicNumberCount).append(")\n");
             }
             i++;
         }
@@ -62,8 +62,8 @@ public class OverallLeaderboard extends Leaderboard {
         embedBuilder.addField("__Classement__ :", sb.toString(), false)
                 .addField("__Toi__ :", String.format("""
                         ・Ta place : %s
-                        ・Ton score : `%d`
-                        """, memberRanking, memberScore), false)
+                        ・Comptés : `%d`
+                        """, memberRanking, counted), false)
                 .setTimestamp(new Date().toInstant());
         return embedBuilder.build();
     }
