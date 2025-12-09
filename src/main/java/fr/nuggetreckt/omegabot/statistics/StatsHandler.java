@@ -160,6 +160,8 @@ public class StatsHandler {
 
             if (content.endsWith("69")) {
                 ms.magicNumberCount++;
+            }else if (content.endsWith("0000")) {
+                ms.tenThousandsCount++;
             } else if (content.endsWith("000")) {
                 ms.thousandsCount++;
             } else if (content.endsWith("00")) {

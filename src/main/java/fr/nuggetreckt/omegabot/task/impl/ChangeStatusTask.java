@@ -36,6 +36,7 @@ public class ChangeStatusTask extends Task {
         addStatus("\uD83C\uDF5E");
         addStatus("PogBot");
         addStatus("Stanley Kubrick était chargé par le gouvernement américain de faire des fausses vidéos de pas sur la lune. Mais il était si perfectionniste qu'il l'a finalement fait sur place.");
+        addStatus("Version " + instance.getVersion());
     }
 
     private void addStatus(String message) {
