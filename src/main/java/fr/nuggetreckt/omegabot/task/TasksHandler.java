@@ -35,13 +35,21 @@ public class TasksHandler {
     }
 
     public void stopTasks() {
+        int id = 0;
+
         for (Task task : tasks) {
             if (task.isRunning()) {
+                int attempts = 0;
+
                 while (true) {
                     long startTime = System.currentTimeMillis();
 
-                    instance.getLogger().info("Waiting for task to finish.");
+                    instance.getLogger().info("Waiting for task #{} ({}) to finish.", id, task.getClass().getName());
                     if (!task.isRunning()) {
+                        task.stop();
+                        break;
+                    } else if (attempts > 10) {
+                        instance.getLogger().warn("Task #{} ({}) failed to stop after 10 attempts. Stopping task...", id, task.getClass().getName());
                         task.stop();
                         break;
                     }
@@ -55,10 +63,12 @@ public class TasksHandler {
                             break;
                         }
                     }
+                    attempts++;
                 }
                 continue;
             }
             task.stop();
+            id++;
         }
     }
 
