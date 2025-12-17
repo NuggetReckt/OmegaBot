@@ -6,12 +6,14 @@ public class MemberStats {
     public long magicNumberCount;
     public long hundredsCount;
     public long thousandsCount;
+    public long tenThousandsCount;
 
-    public MemberStats(long counted, long magicNumberCount, long hundredsCount, long thousandsCount) {
+    public MemberStats(long counted, long magicNumberCount, long hundredsCount, long thousandsCount, long tenThousandsCount) {
         this.counted = counted;
         this.magicNumberCount = magicNumberCount;
         this.hundredsCount = hundredsCount;
         this.thousandsCount = thousandsCount;
+        this.tenThousandsCount = tenThousandsCount;
     }
 
     public MemberStats() {
@@ -19,6 +21,7 @@ public class MemberStats {
         this.magicNumberCount = 0;
         this.hundredsCount = 0;
         this.thousandsCount = 0;
+        this.tenThousandsCount = 0;
     }
 
     public long getScore() {
@@ -27,6 +30,7 @@ public class MemberStats {
         score += magicNumberCount * 4;
         score += hundredsCount * 2;
         score += thousandsCount * 3;
+        score += tenThousandsCount * 5;
         return score;
     }
 }

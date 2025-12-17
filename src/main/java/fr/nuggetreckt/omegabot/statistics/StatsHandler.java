@@ -72,6 +72,7 @@ public class StatsHandler {
             long magicNumberCount = Long.parseLong(statsObj.get("magicNumberCount").toString());
             long hundredsCount = Long.parseLong(statsObj.get("hundredsCount").toString());
             long thousandsCount = Long.parseLong(statsObj.get("thousandsCount").toString());
+            long tenThousandsCount = Long.parseLong(statsObj.get("tenThousandsCount").toString());
 
             if (!membersStats.containsKey(memberId) || membersStats.get(memberId) == null)
                 initMemberStats(memberId);
@@ -80,6 +81,7 @@ public class StatsHandler {
             memberStats.magicNumberCount = magicNumberCount;
             memberStats.hundredsCount = hundredsCount;
             memberStats.thousandsCount = thousandsCount;
+            memberStats.tenThousandsCount = tenThousandsCount;
         });
         long expectedCount = getExpectedCountFromLastMessage();
 
@@ -160,6 +162,8 @@ public class StatsHandler {
 
             if (content.endsWith("69")) {
                 ms.magicNumberCount++;
+            } else if (content.endsWith("0000")) {
+                ms.tenThousandsCount++;
             } else if (content.endsWith("000")) {
                 ms.thousandsCount++;
             } else if (content.endsWith("00")) {

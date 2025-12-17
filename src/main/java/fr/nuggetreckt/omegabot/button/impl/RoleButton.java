@@ -35,25 +35,26 @@ public class RoleButton extends Button {
 
     @Override
     public void execute(@NotNull ButtonInteractionEvent event) {
-        if (event.getComponentId().contains("ROLE")) {
-            Member member = event.getMember();
-            assert member != null;
+        String id = event.getComponentId();
 
-            for (String button : roleButtons.keySet()) {
-                if (Objects.requireNonNull(event.getButton().getId()).equals(button)) {
-                    Role role = roleButtons.get(button);
+        if (!id.contains("ROLE")) return;
+        Member member = event.getMember();
+        assert member != null;
 
-                    if (!member.getRoles().contains(role)) {
-                        addRoleToMember(member, role);
-                        event.reply("> Rôle " + role.getAsMention() + " ajouté avec succès.").setEphemeral(true)
-                                .queue();
-                    } else {
-                        removeRoleFromMember(member, role);
-                        event.reply("> Rôle " + role.getAsMention() + " retiré avec succès.").setEphemeral(true)
-                                .queue();
-                    }
-                    break;
+        for (String button : roleButtons.keySet()) {
+            if (id.equals(button)) {
+                Role role = roleButtons.get(button);
+
+                if (!member.getRoles().contains(role)) {
+                    addRoleToMember(member, role);
+                    event.reply("> Rôle " + role.getAsMention() + " ajouté avec succès.").setEphemeral(true)
+                            .queue();
+                } else {
+                    removeRoleFromMember(member, role);
+                    event.reply("> Rôle " + role.getAsMention() + " retiré avec succès.").setEphemeral(true)
+                            .queue();
                 }
+                break;
             }
         }
     }

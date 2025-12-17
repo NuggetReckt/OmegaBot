@@ -40,6 +40,7 @@ public class JsonUtil {
             long magicNumberCount = 0;
             long hundredsCount = 0;
             long thousandsCount = 0;
+            long tenThousandsCount = 0;
 
             if (stats.containsKey(member.getId()) || stats.get(member.getId()) != null) {
                 MemberStats memberStats = statsHandler.getMemberStats(member.getId());
@@ -47,11 +48,13 @@ public class JsonUtil {
                 magicNumberCount = memberStats.magicNumberCount;
                 hundredsCount = memberStats.hundredsCount;
                 thousandsCount = memberStats.thousandsCount;
+                tenThousandsCount = memberStats.tenThousandsCount;
             }
             statsObj.put("counted", counted);
             statsObj.put("magicNumberCount", magicNumberCount);
             statsObj.put("hundredsCount", hundredsCount);
             statsObj.put("thousandsCount", thousandsCount);
+            statsObj.put("tenThousandsCount", tenThousandsCount);
 
             memberObj.put("stats", statsObj);
             memberArray.add(memberObj);

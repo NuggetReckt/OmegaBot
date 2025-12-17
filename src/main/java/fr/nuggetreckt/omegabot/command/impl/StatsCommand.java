@@ -2,6 +2,7 @@ package fr.nuggetreckt.omegabot.command.impl;
 
 import fr.nuggetreckt.omegabot.OmegaBot;
 import fr.nuggetreckt.omegabot.command.Command;
+import fr.nuggetreckt.omegabot.exception.MemberNotFoundException;
 import fr.nuggetreckt.omegabot.statistics.MemberStats;
 import fr.nuggetreckt.omegabot.statistics.StatsHandler;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -30,17 +31,21 @@ public class StatsCommand extends Command {
             target = Objects.requireNonNull(event.getOption("membre")).getAsMember();
 
         if (target == null) {
-            event.reply("| Une erreur est survenue lors de la récupération du membre.").setEphemeral(true).queue();
+            event.reply("> Une erreur est survenue lors de la récupération du membre.").setEphemeral(true).queue();
             return;
         }
-        event.replyEmbeds(getStatsEmbed(target))
-                .queue();
+        try {
+            event.replyEmbeds(getStatsEmbed(target))
+                    .queue();
+        } catch (MemberNotFoundException e) {
+            event.reply("> Le membre n'est pas participant au compteur !").setEphemeral(true).queue();
+        }
     }
 
     @NotNull
     private MessageEmbed getStatsEmbed(@NotNull Member member) {
         StatsHandler statsHandler = instance.getStatsHandler();
-        MemberStats memberStats = statsHandler.getMemberStats(member.getId());
+        MemberStats ms = statsHandler.getMemberStats(member.getId());
         EmbedBuilder stats = new EmbedBuilder();
 
         stats.setTitle("\uD83D\uDCCA ・ Stats (" + member.getEffectiveName() + ")")
@@ -55,7 +60,8 @@ public class StatsCommand extends Command {
                         ・Nombres magiques : `%d`
                         ・Centaines : `%d`
                         ・Millièmes : `%d`
-                        """, memberStats.getScore(), memberStats.counted, memberStats.magicNumberCount, memberStats.hundredsCount, memberStats.thousandsCount), false)
+                        ・Dix-millièmes : `%d`
+                        """, ms.getScore(), ms.counted, ms.magicNumberCount, ms.hundredsCount, ms.thousandsCount, ms.tenThousandsCount), false)
                 .setColor(new Color(255, 255, 255, 1))
                 .setFooter("OmegaBot - NuggetReckt", "https://media.discordapp.net/attachments/712679066872053810/1017822877799686225/unknown.png")
                 .setTimestamp(new Date().toInstant());

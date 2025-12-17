@@ -4,9 +4,10 @@ import fr.nuggetreckt.omegabot.OmegaBot;
 import fr.nuggetreckt.omegabot.command.Command;
 import fr.nuggetreckt.omegabot.statistics.leaderboard.Leaderboard;
 import fr.nuggetreckt.omegabot.statistics.leaderboard.LeaderboardHandler;
+import net.dv8tion.jda.api.components.actionrow.ActionRow;
+import net.dv8tion.jda.api.components.selections.StringSelectMenu;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
-import net.dv8tion.jda.api.interactions.components.selections.StringSelectMenu;
 import org.jetbrains.annotations.NotNull;
 
 public class LeaderBoardCommand extends Command {
@@ -31,7 +32,7 @@ public class LeaderBoardCommand extends Command {
 
         assert member != null;
         event.replyEmbeds(leaderboard.getEmbed(member))
-                .setActionRow(menu.build())
+                .addComponents(ActionRow.of(menu.build()))
                 .queue();
     }
 }

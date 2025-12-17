@@ -3,10 +3,11 @@ package fr.nuggetreckt.omegabot.task.impl;
 import fr.nuggetreckt.omegabot.OmegaBot;
 import fr.nuggetreckt.omegabot.task.Task;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.components.actionrow.ActionRow;
+import net.dv8tion.jda.api.components.buttons.Button;
 import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import net.dv8tion.jda.api.entities.emoji.Emoji;
-import net.dv8tion.jda.api.interactions.components.buttons.Button;
 
 import java.awt.*;
 import java.util.Date;
@@ -57,15 +58,19 @@ public class SendEmbedsTask extends Task {
                 .setTimestamp(new Date().toInstant());
 
         takeRoleChannel.sendMessageEmbeds(takeRoleEmbed.build())
-                .setActionRow(
-                        Button.primary("ROLE_POLLS", Emoji.fromFormatted("\uD83D\uDCCA")),
-                        Button.primary("ROLE_ANNOUNCEMENTS", Emoji.fromFormatted("\uD83D\uDCE2")),
-                        Button.primary("ROLE_EVENTS", Emoji.fromFormatted("\uD83C\uDF89")),
-                        Button.primary("ROLE_INTERESTING_INFORMATIONS", Emoji.fromFormatted("\uD83D\uDCDA"))
+                .addComponents(
+                        ActionRow.of(
+                                Button.primary("ROLE_POLLS", Emoji.fromFormatted("\uD83D\uDCCA")),
+                                Button.primary("ROLE_ANNOUNCEMENTS", Emoji.fromFormatted("\uD83D\uDCE2")),
+                                Button.primary("ROLE_EVENTS", Emoji.fromFormatted("\uD83C\uDF89")),
+                                Button.primary("ROLE_INTERESTING_INFORMATIONS", Emoji.fromFormatted("\uD83D\uDCDA"))
+                        )
                 )
-                .addActionRow(
-                        Button.primary("ROLE_MINECRAFT", Emoji.fromFormatted("\uD83C\uDF33")),
-                        Button.primary("ROLE_HARDWARE_TECH", Emoji.fromFormatted("\uD83D\uDD28"))
+                .addComponents(
+                        ActionRow.of(
+                                Button.primary("ROLE_MINECRAFT", Emoji.fromFormatted("\uD83C\uDF33")),
+                                Button.primary("ROLE_HARDWARE_TECH", Emoji.fromFormatted("\uD83D\uDD28"))
+                        )
                 )
                 .queue();
     }
@@ -86,8 +91,10 @@ public class SendEmbedsTask extends Task {
                 .setTimestamp(new Date().toInstant());
 
         verifyChannel.sendMessageEmbeds(verifyEmbed.build())
-                .setActionRow(
-                        Button.primary("VERIFY", "Acceder au Discord")
+                .addComponents(
+                        ActionRow.of(
+                                Button.primary("VERIFY", "Acceder au Discord")
+                        )
                 )
                 .queue();
     }
