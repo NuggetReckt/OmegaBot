@@ -21,6 +21,7 @@ public class MemberJoinListener extends ListenerAdapter {
 
     @Override
     public void onGuildMemberJoin(@NotNull GuildMemberJoinEvent event) {
+        if (event.getUser().isBot()) return;
         EmbedBuilder join = new EmbedBuilder();
         Member member = event.getMember();
 
