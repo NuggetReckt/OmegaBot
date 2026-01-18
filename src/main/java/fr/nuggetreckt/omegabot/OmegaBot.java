@@ -13,13 +13,11 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import net.dv8tion.jda.api.utils.concurrent.Task;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sun.misc.Signal;
 
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -109,9 +107,7 @@ public class OmegaBot {
     }
 
     public Queue<Member> loadMembers() {
-        Task<List<Member>> memberGetTask = configHandler.getConfig().getGuild().loadMembers();
-
-        new Thread(() -> members.addAll(memberGetTask.get())).start();
+        configHandler.getConfig().getGuild().loadMembers().onSuccess(members::addAll);
         return members;
     }
 

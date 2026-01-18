@@ -33,11 +33,20 @@ public class MessageUtil {
 
     public static Message getValidMessageBefore(@NotNull Message message) {
         MessageHistory history = message.getChannel().getHistoryBefore(message, 10).complete();
+        return getValidMessageFromHistory(history, message.getAuthor().getId());
+    }
+
+    public static Message getValidMessageBefore(@NotNull Message message, List<String> messagesToSkip) {
+        MessageHistory history = message.getChannel().getHistoryBefore(message, 10).complete();
+        return getValidMessageFromHistory(history, message.getAuthor().getId(), messagesToSkip);
+    }
+
+    public static Message getValidMessageFromHistory(@NotNull MessageHistory history, String authorId) {
         Message before = null;
 
         for (Message msg : history.getRetrievedHistory()) {
             if (msg.getAuthor().isBot()) continue;
-            if (msg.getAuthor().getId().equals(message.getAuthor().getId())) continue;
+            if (msg.getAuthor().getId().equals(authorId)) continue;
 
             if (isMessageValid(msg.getContentRaw())) {
                 before = msg;
@@ -47,14 +56,13 @@ public class MessageUtil {
         return before;
     }
 
-    public static Message getValidMessageBefore(@NotNull Message message, List<String> messagesToSkip) {
-        MessageHistory history = message.getChannel().getHistoryBefore(message, 10).complete();
+    public static Message getValidMessageFromHistory(@NotNull MessageHistory history, String authorId, List<String> messagesToSkip) {
         Message before = null;
         boolean doSkip;
 
         for (Message msg : history.getRetrievedHistory()) {
             if (msg.getAuthor().isBot()) continue;
-            if (msg.getAuthor().getId().equals(message.getAuthor().getId())) continue;
+            if (msg.getAuthor().getId().equals(authorId)) continue;
 
             doSkip = false;
             for (String id : messagesToSkip) {
