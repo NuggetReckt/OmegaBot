@@ -8,6 +8,7 @@ import fr.nuggetreckt.omegabot.util.MessageUtil;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
 import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONArray;
@@ -16,11 +17,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.ExecutionException;
+import java.util.*;
 
 public class StatsHandler {
 
@@ -122,15 +119,21 @@ public class StatsHandler {
         Bar progressBar = new Bar(50, 0);
         progressBar.display();
         try {
-            messages = channel.getIterableHistory().takeAsync(1000000)
-                    .thenApply(ArrayList::new)
-                    .get().reversed();
-        } catch (InterruptedException | ExecutionException e) {
+            MessageHistory history = channel.getHistory();
+            List<Message> retrieved;
+
+            while (!(retrieved = history.retrievePast(100).complete()).isEmpty()) {
+                messages.addAll(retrieved);
+                if (messages.size() >= 100000) break;
+                Thread.sleep(1200);
+            }
+            Collections.reverse(messages);
+        } catch (Exception e) {
             instance.getLogger().error("Failed to get messages from channel: " + e.getMessage());
+            return;
         }
         if (messages.isEmpty()) return;
 
-        long expectedCount = getExpectedCountFromLastMessage();
         long counted = 0;
 
         progressBar.setMaxValue(messages.size());
@@ -174,6 +177,10 @@ public class StatsHandler {
         }
         System.out.println();
         currentNum = counted;
+
+        Message lastMessage = messages.get(messages.size() - 1);
+        long expectedCount = MessageUtil.parseMessage(lastMessage.getContentRaw());
+
         if (currentNum != expectedCount) {
             instance.getLogger().warn("Current number is " + currentNum + ", but expected " + expectedCount + ". Setting current number to expected value.");
             currentNum = expectedCount;
@@ -182,14 +189,24 @@ public class StatsHandler {
 
     private long getExpectedCountFromLastMessage() {
         MessageChannel channel = instance.getConfigHandler().getConfig().getCountChannel();
-        Message lastMessage = channel.retrieveMessageById(channel.getLatestMessageId()).complete();
+        MessageHistory history = channel.getHistoryBefore(channel.getLatestMessageId(), 10).complete();
         long expectedCount = -1;
 
-        if (!lastMessage.getAuthor().isBot() && MessageUtil.isMessageValid(lastMessage.getContentRaw())) {
-            expectedCount = MessageUtil.parseMessage(lastMessage.getContentRaw());
-        } else {
-            Message validMessage = MessageUtil.getValidMessageBefore(lastMessage);
-            expectedCount = MessageUtil.parseMessage(validMessage.getContentRaw());
+        try {
+            Message lastMessage = channel.retrieveMessageById(channel.getLatestMessageId()).complete();
+            if (!lastMessage.getAuthor().isBot() && MessageUtil.isMessageValid(lastMessage.getContentRaw())) {
+                expectedCount = MessageUtil.parseMessage(lastMessage.getContentRaw());
+            } else {
+                Message validMessage = MessageUtil.getValidMessageFromHistory(history, lastMessage.getAuthor().getId());
+                if (validMessage != null) {
+                    expectedCount = MessageUtil.parseMessage(validMessage.getContentRaw());
+                }
+            }
+        } catch (Exception e) {
+            Message validMessage = MessageUtil.getValidMessageFromHistory(history, "");
+            if (validMessage != null) {
+                expectedCount = MessageUtil.parseMessage(validMessage.getContentRaw());
+            }
         }
         return expectedCount;
     }

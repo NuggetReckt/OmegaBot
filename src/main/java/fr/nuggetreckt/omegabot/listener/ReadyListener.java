@@ -47,7 +47,7 @@ public class ReadyListener implements EventListener {
 
                 instance.loadMembers();
                 try {
-                    Thread.sleep(2000);
+                    Thread.sleep(10000);
                 } catch (InterruptedException e) {
                     instance.getLogger().error(e.getMessage());
                 }

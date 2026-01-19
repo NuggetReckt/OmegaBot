@@ -21,12 +21,14 @@ public class MemberMessageListener extends ListenerAdapter {
 
     private final OmegaBot instance;
     private final List<String> messagesToSkip;
+    private final List<String> invalidMessages;
 
     private final Emoji INVALID_EMOJI = Emoji.fromUnicode("❌");
 
     public MemberMessageListener(OmegaBot instance) {
         this.instance = instance;
         this.messagesToSkip = new ArrayList<>();
+        this.invalidMessages = new ArrayList<>();
     }
 
     @Override
@@ -74,7 +76,7 @@ public class MemberMessageListener extends ListenerAdapter {
 
     private boolean handleMessage(@NotNull Member author, @NotNull Message message) {
         StatsHandler statsHandler = instance.getStatsHandler();
-        Message validBefore = MessageUtil.getValidMessageBefore(message);
+        Message validBefore = MessageUtil.getValidMessageBefore(message, invalidMessages);
         Message countBefore = MessageUtil.getMessageBefore(message);
         MemberStats memberStats;
         long validBeforeValue;
@@ -86,19 +88,16 @@ public class MemberMessageListener extends ListenerAdapter {
             statsHandler.initMemberStats(author.getId());
         }
         memberStats = statsHandler.getMemberStats(author.getId());
-        if (memberStats == null || validBefore == null || countBefore.getAuthor().getId().equals(message.getAuthor().getId()) || !MessageUtil.isMessageValid(message.getContentRaw())) {
+
+        if (memberStats == null || validBefore == null || countBefore.getAuthor().getId().equals(message.getAuthor().getId()) || !MessageUtil.isMessageValid(message.getContentRaw()))
             return false;
-        }
         String content = MessageUtil.splitMessage(message.getContentRaw());
         count = MessageUtil.parseMessage(message.getContentRaw());
         validBeforeValue = MessageUtil.parseMessage(validBefore.getContentRaw());
 
-        if (count != validBeforeValue + 1) {
-            return false;
-        }
-        if (messagesToSkip.contains(message.getId())) {
-            return true;
-        }
+        if (count != validBeforeValue + 1) return false;
+        if (messagesToSkip.contains(message.getId())) return true;
+
         messagesToSkip.add(message.getId());
         if (content.endsWith("69")) {
             message.addReaction(Emoji.fromFormatted("\uD83D\uDE0F")).queue();
@@ -114,10 +113,14 @@ public class MemberMessageListener extends ListenerAdapter {
     }
 
     private void handleInvalidMessage(@NotNull Message message) {
+        if (!invalidMessages.contains(message.getId())) {
+            invalidMessages.add(message.getId());
+        }
         message.addReaction(INVALID_EMOJI).queue();
     }
 
     private void handleValidMessage(@NotNull Message message) {
+        invalidMessages.remove(message.getId());
         if (!messagesToSkip.contains(message.getId())) {
             messagesToSkip.add(message.getId());
         }
